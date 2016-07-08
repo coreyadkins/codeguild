@@ -2,7 +2,7 @@
 #1. Setup
 GALLON_COVERAGE = 400 #coverage in Sq. Feet
 JOB_COST = 0
-AREA_LIST = []
+AREA_LIST = [0]
 SUM_AREA = 0
 
 
@@ -22,7 +22,8 @@ while num_walls >= 1: #Need to create additive variable which ouputs list that i
     print('How many coats would you like to put on your wall:')
     num_coats = int(input())
     area = (wall_height * wall_width) * num_coats #Outputs units in Sq. Feet
-    AREA_LIST += area
+    print(area)
+    AREA_LIST += str(area)
     num_walls -= 1
     print(AREA_LIST)
 
@@ -34,12 +35,12 @@ import math
 SUM_AREA = sum(AREA_LIST)
 SUM_AREA = (wall_width * wall_height) * num_coats
 gallons_paint = SUM_AREA / GALLON_COVERAGE
-gallons_paint = math.ciel(gallons_paint)
-wall_cost = float(gallons_paint) * paint_cost
+gallons_purchased = math.ceil(gallons_paint)
+wall_cost = float(gallons_purchased) * paint_cost
 JOB_COST += wall_cost
 
 #4. Output
 if JOB_COST <= 1:
-    print('This job will cost ' + str(JOB_COST) + ' dollar')
+    print('This job will cost ' + str(round(JOB_COST)) + ' dollar')
 else:
-    print('This job will cost ' + str(JOB_COST) + ' dollars')
+    print('This job will cost ' + str(round(JOB_COST)) + ' dollars')
