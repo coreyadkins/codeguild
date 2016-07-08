@@ -10,31 +10,32 @@ starting_unit = input('Hello. I am a program that converts distances. What is' +
                       'your starting unit of measurement?' +
                       ' Please input; mi, km, ft or m. ')
 
-starting_distance = input('What is your distance amount? ')
+distance_in_starting_unit = float(input('What is your distance amount? '))
 
 output_unit = input('What is your end unit, please input; mi, km, ft or m ? ')
 
 #3. Transform to Meters
+
 if starting_unit == 'mi':
-    converted_to_meters = MI_TO_M * float(starting_distance)
+    distance_in_converted_unit = MI_TO_M * distance_in_starting_unit
 if starting_unit == 'km':
-    converted_to_meters = KM_TO_M * float(starting_distance)
+    distance_in_converted_unit = KM_TO_M * distance_in_starting_unit
 if starting_unit == 'ft':
-    converted_to_meters = FT_TO_M * float(starting_distance)
+    distance_in_converted_unit = FT_TO_M * distance_in_starting_unit
 if starting_unit == 'm':
-    converted_to_meters = float(starting_distance)
+    distance_in_converted_unit = distance_in_starting_unit
 
 #3b. Transform to Output
 if output_unit == 'm':
-    output = converted_to_meters
+    distance_in_output_unit = distance_in_converted_unit
 if output_unit == 'mi':
-    output = converted_to_meters / float(MI_TO_M)
+    distance_in_output_unit = distance_in_converted_unit / float(MI_TO_M)
 if output_unit == 'km':
-    output = converted_to_meters / KM_TO_M
+    distance_in_output_unit = distance_in_converted_unit / KM_TO_M
 if output_unit == 'ft':
-    output = converted_to_meters / FT_TO_M
+    distance_in_output_unit = distance_in_converted_unit / FT_TO_M
 
 
 #4. Output
 
-print('Output: ' + str(output))
+print('Output: ' + str(distance_in_output_unit))
