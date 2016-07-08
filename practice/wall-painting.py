@@ -13,7 +13,7 @@ print('Cost of a gallon of paint, in dollars:')
 paint_cost = float(input())
 
 
-while num_walls >= 1:
+while num_walls >= 1: #Need to create additive variable which ouputs list that is totalled in SUM_AREA, rather than using SUM_AREA in while loop
     print('Width of the wall in feet:')
     wall_width = int(input())
     print('Height of the wall in feet:')
