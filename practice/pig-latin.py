@@ -1,44 +1,45 @@
 """This program turns a word into pig latin"""
+# Fix so that Capitalization reflects the input word, rather than just always
+# capitalizing, or always punctuating.
+
+# Separate grammar block from Pig Latin block.
 
 # 1. Setup
 
-VOWEL = ['a', 'e', 'i', 'o', 'u']
+VOWEL = ['a', 'e', 'i', 'o', 'u', 'A,' 'E', 'I', 'O', 'U']
 
 # 2. Input
 
-input_word = input('Type word: ')
+# english_word = input('Type word: ')
+english_word = 'Cool'
 
 # 3. Transform
-input_word = input_word.lower()
-split_word_list = list(input_word)
 
-# Check first letter type, if consonant. Else, vowel. Use bool variable.
+english_word_as_list = list(english_word)
 
-if split_word_list[0] in VOWEL:
-    is_vowel = True
-else:
-    is_vowel = False
-
-# Processing. Use if blocks against bool variable for consonant check. If true,
-# transform by moving first letter to end, adding 'ay'. If false, add 'yay'
-
-capitalization_input = ''.join(split_word_list[0])
-input_word = capitalization_input.upper() + ''.join(split_word_list[1:])
-
-if is_vowel is True:
-    capitalization_input = ''.join(split_word_list[0])
-    split_word_list = capitalization_input.upper() + ''.join(split_word_list[1:])
-    pig_latin_word = split_word_list + 'yay.'
+if english_word_as_list[0] in VOWEL:
+    separated_first_letter = ''.join(english_word_as_list[0])
+    punctuated_word_stem = (separated_first_letter.upper() +
+                            ''.join(english_word_as_list[1:]))
+    pig_latin_word = punctuated_word_stem + 'yay.'
 
 else:
-    first_letter = split_word_list[0]
-    capitalization_input = ''.join(split_word_list[1])
-    split_word_list = capitalization_input.upper() + ''.join(split_word_list[2:])
-    pig_latin_word = (''.join(split_word_list[1].upper()) +
-                      ''.join(split_word_list[2:]) + first_letter + 'ay.')
+    pig_latin_word = ''.join(english_word_as_list[1]) + ''.join(english_word_as_list[2:]) + ''.join(english_word_as_list[0]) + 'ay'
 
-# Capitalization and punctuation
+# Punctualization block
+
+pig_latin_word = pig_latin_word.lower()
+
+if  english_word[0].isupper():
+    print('True')
+    final_pig_latin_word= pig_latin_word.capitalize()
+else:
+    final_pig_latin_word = pig_latin_word
+
+english_word_first_letter_capitalized = ''.join(english_word_as_list[0])
+english_word_punctuated = (english_word_first_letter_capitalized.upper() +
+                          ''.join(english_word_as_list[1:]))
 
 # 4. Output
 
-print(input_word + ' in Pig Latin is ' + pig_latin_word)
+print(english_word_punctuated + ' in Pig Latin is ' + final_pig_latin_word)
