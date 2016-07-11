@@ -12,6 +12,7 @@ second_card = input('What is your second card?')
 #3. Transform
 
 if first_card in NAME_CARDS:
+    first_card = 10
     first_card_value = 10
 if first_card in NUMBER_CARDS:
     first_card_value = int(first_card)
