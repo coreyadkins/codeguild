@@ -1,41 +1,56 @@
 """This program dispenses Blackjack playing guidance"""
-#1. Setup
+# 1. Define
 
-NAME_CARDS = ['J', 'Q', 'K']
-NUMBER_CARDS = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
+def prompt_user_input():
+    first_card = input('What is your first card? ')
+    second_card = input('What is your second card? ')
+    submitted_cards_list = []
+    submitted_cards_list += [first_card] + [second_card]
+    return submitted_cards_list
 
-#2. input
+def add_card_values(submitted_cards_list):
+    NAME_CARDS = ['J', 'Q', 'K', 'j', 'q', 'k']
+    NUMBER_CARDS = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
+    if submitted_cards_list[0] in NAME_CARDS:
+        first_card_value = 10
+    elif submitted_cards_list[0] in NUMBER_CARDS:
+        first_card_value = int(submitted_cards_list[0])
+    elif submitted_cards_list[0] == 'A':
+        first_card_value = 1
+    if submitted_cards_list[1] in NAME_CARDS:
+        second_card_value = 10
+    elif submitted_cards_list[1] in NUMBER_CARDS:
+        second_card_value = int(submitted_cards_list[1])
+    elif submitted_cards_list[1] == 'A':
+        second_card_value = 1
+    sum_of_card_values = first_card_value + second_card_value
+    if submitted_cards_list[0] == 'A' or submitted_cards_list[1] == 'A' and sum_of_card_values <= 11:
+        sum_of_card_values += 10
+    return sum_of_card_values
 
-first_card = input('What is your first card?')
-second_card = input('What is your second card?')
+def determine_output_suggestion(sum_of_card_values):
+    if sum_of_card_values < 16:
+        output_suggestion = 'Hit!'
+    elif sum_of_card_values >= 17:
+        output_suggestion = 'Stay!'
+    elif sum_of_card_values == 21:
+        output_suggestion = 'Blackjack!'
+    return output_suggestion
 
-#3. Transform
 
-if first_card in NAME_CARDS:
-    first_card_value = 10
-elif first_card in NUMBER_CARDS:
-    first_card_value = int(first_card)
-elif first_card == 'A':
-    first_card_value = 1
+# 2. Main
 
-if second_card in NAME_CARDS:
-    second_card_value = 10
-elif second_card in NUMBER_CARDS:
-    second_card_value = int(second_card)
-elif second_card == 'A':
-    second_card_value = 1
+def main():
+    submitted_cards_list = prompt_user_input()
+    sum_of_card_values = add_card_values(submitted_cards_list)
+    output_suggestion = determine_output_suggestion(sum_of_card_values)
+    print(output_suggestion)
+    return output_suggestion
 
-sum_card_values = first_card_value + second_card_value
-if first_card == 'A' or second_card == 'A' and sum_card_values <= 11:
-    sum_card_values += 10
+main()
 
-# Determining Outputs (Note: Add functionality to input hit card)
-if sum_card_values < 17:
-    output = 'Hit!'
-if sum_card_values >= 17:
-    output = 'Stay!'
-if sum_card_values == 21:
-    output = 'Blackjack!'
+# 3. Input
 
-#4. Output
-print(output)
+# 4. Transform
+
+# 5. Output
