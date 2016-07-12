@@ -39,7 +39,7 @@ def join_words(words):
 # 2. Input
 input_str = input('Please input a list of words, separated by a space. ')
 if '' == input_str:
-    input_str = 'apple banana clove frat pain mask asdf what weird face'
+    input_str = 'default words'
 
 
 # 3. Transform
