@@ -11,7 +11,7 @@ walls_to_paint = int(input())
 print('Cost of a gallon of paint, in dollars:')
 paint_cost_dollars = float(input())
 
-if i in range(walls_to_paint):
+while walls_to_paint > 0:
     print('Width of the wall in feet:')
     wall_width_feet = int(input())
     print('Height of the wall in feet:')
@@ -23,6 +23,7 @@ if i in range(walls_to_paint):
     current_wall_sq_ft_to_paint = (current_wall_physical_sq_ft *
                                    num_coats)
     list_of_walls_sq_ft += [current_wall_sq_ft_to_paint]
+    walls_to_paint -= 1
 
 #3. Transform
 
