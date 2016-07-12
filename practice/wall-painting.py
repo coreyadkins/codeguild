@@ -11,7 +11,7 @@ walls_to_paint = int(input())
 print('Cost of a gallon of paint, in dollars:')
 paint_cost_dollars = float(input())
 
-while walls_to_paint > 0:
+for number in range (walls_to_paint):
     print('Width of the wall in feet:')
     wall_width_feet = int(input())
     print('Height of the wall in feet:')
