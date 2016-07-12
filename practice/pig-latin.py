@@ -16,7 +16,7 @@ if english_word_as_list[0] in VOWEL:
 else:
     pig_latin_word = ''.join(english_word_as_list[1:]) + ''.join(english_word_as_list[0]) + 'ay'
 
-# Punctualization block 
+# Punctualization block
 
 pig_latin_word = pig_latin_word.lower()
 

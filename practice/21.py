@@ -1,7 +1,8 @@
 """This program dispenses Blackjack playing guidance"""
 # 1. Define
 
-def prompt_user_input():
+def input_card_names():
+    """This gathers the card names from the user"""
     first_card = input('What is your first card? ')
     second_card = input('What is your second card? ')
     submitted_cards_list = []
@@ -9,6 +10,7 @@ def prompt_user_input():
     return submitted_cards_list
 
 def add_card_values(submitted_cards_list):
+    """This assigns values to the cards, and then creates a total value of both cards"""
     NAME_CARDS = ['J', 'Q', 'K', 'j', 'q', 'k']
     NUMBER_CARDS = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
     if submitted_cards_list[0] in NAME_CARDS:
@@ -29,6 +31,7 @@ def add_card_values(submitted_cards_list):
     return sum_of_card_values
 
 def determine_output_suggestion(sum_of_card_values):
+    """This takes the total value of the two cards and generates a suggestion to hit, stay, or blackjack"""
     if sum_of_card_values < 16:
         output_suggestion = 'Hit!'
     elif sum_of_card_values >= 17:
@@ -41,7 +44,7 @@ def determine_output_suggestion(sum_of_card_values):
 # 2. Main
 
 def main():
-    submitted_cards_list = prompt_user_input()
+    submitted_cards_list = input_card_names()
     sum_of_card_values = add_card_values(submitted_cards_list)
     output_suggestion = determine_output_suggestion(sum_of_card_values)
     print(output_suggestion)
