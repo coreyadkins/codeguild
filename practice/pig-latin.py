@@ -1,9 +1,4 @@
 """This program turns a word into pig latin"""
-# Fix so that Capitalization reflects the input word, rather than just always
-# capitalizing, or always punctuating.
-
-# Separate grammar block from Pig Latin block.
-
 # 1. Setup
 
 VOWEL = ['A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u']
