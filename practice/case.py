@@ -3,6 +3,8 @@
 # 1. Setup
 import re
 
+# 2. Define
+
 def prompt_for_input_phrase():
     """Gathers input word from user"""
     # return input('What is the word you would like to transform?')
@@ -45,9 +47,6 @@ def convert_to_correct_case(is_snake_case_bool, list_of_words):
         joined_word = ''.join(upper_case_word)
         output_version = joined_word
     return output_version
-
-
-# 2. Define
 
 # 3. Main
 
