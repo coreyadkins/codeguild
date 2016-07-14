@@ -26,8 +26,17 @@ def convert_to_correct_case(is_snake_case_bool, input_word):
     """
     # Converting CamelCase to snake_case
     if is_snake_case_bool == False:
-        lower_case_word = input_word.swapcase()
-        # input_word_list = list(input_word)
+        input_word_list = list(input_word)
+        capital_positions_indicies = [i for i, x in enumerate(input_word) if x.isupper()]
+        word_with_underscores = [input_word_list.append('_') for x, capital_positions_indicies in enumerate(input_word_list)]
+        # How to do no functions? I.e. [if x == 0 else none ...]
+        ()
+    None
+
+
+
+
+
         # for x in input_word_list:
         #     input_wrod
     # Converting snake_case to CamelCase
