@@ -7,18 +7,15 @@ import re
 
 def prompt_for_input_phrase():
     """Gathers input word from user"""
-    # return input('What is the word you would like to transform?')
-    return 'TestWord'
+    return input('What is the word you would like to transform? ')
+    # return 'test_word'
 
 def detect_case(input_word):
     """Detects whether the word is in snake_case or not, generates bool value storing this
     >>> detect_case('test_word')
     True
     """
-    if input_word[0].isupper() == True:
-        is_snake_case = False
-    else:
-        is_snake_case = True
+    is_snake_case = False if input_word[0].isupper() == True else True
     return is_snake_case
 
 def get_word_list(is_snake_case_bool, input_phrase):
@@ -27,10 +24,7 @@ def get_word_list(is_snake_case_bool, input_phrase):
      >>> get_word_list(True, 'test_word')
      ['test', 'word']
      """
-    if is_snake_case_bool == False:
-        word_list = re.findall('[A-Z][^A-Z]*', input_phrase)
-    if is_snake_case_bool == True:
-        word_list = input_phrase.split('_')
+    word_list = re.findall('[A-Z][^A-Z]*', input_phrase) if is_snake_case_bool == False else input_phrase.split('_')
     return word_list
 
 def convert_to_correct_case(is_snake_case_bool, list_of_words):
@@ -38,14 +32,14 @@ def convert_to_correct_case(is_snake_case_bool, list_of_words):
     >>> convert_to_correct_case(False, ['Camel', 'Case'])
     'camel_case'
     """
-    if is_snake_case_bool == False:
-        word_with_underscores = '_'.join(list_of_words)
-        lower_case = word_with_underscores.lower()
-        output_version = lower_case
     if is_snake_case_bool == True:
         upper_case_word = [x.capitalize() for x in list_of_words]
         joined_word = ''.join(upper_case_word)
         output_version = joined_word
+    else:
+        word_with_underscores = '_'.join(list_of_words)
+        lower_case = word_with_underscores.lower()
+        output_version = lower_case
     return output_version
 
 # 3. Main
@@ -53,7 +47,7 @@ def convert_to_correct_case(is_snake_case_bool, list_of_words):
 def main():
     input_phrase = prompt_for_input_phrase()
     is_snake_case_bool = detect_case(input_phrase)
-    list_of_words = get_word_list(input_phrase)
+    list_of_words = get_word_list(is_snake_case_bool, input_phrase)
     converted_word = convert_to_correct_case(is_snake_case_bool, list_of_words)
     print(converted_word)
 
