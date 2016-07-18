@@ -91,40 +91,54 @@ def correct_days_without_value(days_without_value):
         days_without_value[key] = '0'
     return days_without_value
 
-def sort_table_by_year(filtered_table): # Find a sexier solution.
-    table_sorted_by_year = [[][][][][][][][][][][][][][][]]
-    for key in filtered_table:
-        if key[10:11] == '02':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '03':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '04':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '05':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '06':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '07':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '08':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '09':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '10':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '11':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '12':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '13':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '14':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '15':
-            table_sorted_by_year[0] += [key]
-        if key[10:11] == '16':
-            table_sorted_by_year[0] += [key]
-        None
+def sort_table_by_year(filtered_table): # Sexier solution- slice off date and month, then sort into buckets based on year key, look at grouping solution on notes
+    days_by_year = cut_into_years(filtered_table)
+    rain_by_year = {}
+    for key in days_by_year: # Do I need to read in a new dictionary where both the date and the daily rain total are values?
+        if key not in rain_by_year:
+            rain_by_year[key] = []
+        rain_by_year[key] += [key]
+
+
+
+        #
+        #
+        # if key[10:11] == '02':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '03':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '04':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '05':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '06':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '07':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '08':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '09':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '10':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '11':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '12':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '13':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '14':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '15':
+        #     table_sorted_by_year[0] += [key]
+        # if key[10:11] == '16':
+        #     table_sorted_by_year[0] += [key]
+        # None
+
+def cut_into_years(filtered_table):
+    cut_table = [line[10:11] for line in filtered_table]
+    return cut_table
+
 # 2. Define
 
 
