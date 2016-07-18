@@ -124,6 +124,7 @@ def sort_table_by_year(filtered_table): # Find a sexier solution.
             table_sorted_by_year[0] += [key]
         if key[10:11] == '16':
             table_sorted_by_year[0] += [key]
+        None
 # 2. Define
 
 
