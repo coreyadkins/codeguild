@@ -11,16 +11,18 @@ def prompt_for_input_phrase():
     # return 'test_word'
 
 def detect_case(input_word):
-    """Detects whether the word is in snake_case or not, generates bool value storing this
+    """Detects whether the word is in snake_case or not, generates bool value storing this.
+
     >>> detect_case('test_word')
     True
     """
-    is_snake_case = False if input_word[0].isupper() == True else True
+    is_snake_case = not input_word[0].isupper()
     return is_snake_case
 
 def get_word_list(is_snake_case_bool, input_phrase):
     """This program inputs a bool identifying whether a phrase is in either snake_case or CamelCase, the phrase itself,
      and then splits the phrase into a list of words based on which case is used.
+
      >>> get_word_list(True, 'test_word')
      ['test', 'word']
      """
@@ -29,18 +31,36 @@ def get_word_list(is_snake_case_bool, input_phrase):
 
 def convert_to_correct_case(is_snake_case_bool, list_of_words):
     """Inputs a list of words to convert either to snake_case or CamelCase based on the case of the inputted word.
+
     >>> convert_to_correct_case(False, ['Camel', 'Case'])
     'camel_case'
+    >>> convert_to_correct_case(True, ['snake', 'case'])
+    'SnakeCase'
     """
     if is_snake_case_bool == True:
-        upper_case_word = [x.capitalize() for x in list_of_words]
-        joined_word = ''.join(upper_case_word)
-        output_version = joined_word
+        output_version = convert_to_camel_case(list_of_words)
     else:
-        word_with_underscores = '_'.join(list_of_words)
-        lower_case = word_with_underscores.lower()
-        output_version = lower_case
+        output_version = convert_to_snake_case(list_of_words)
     return output_version
+
+def convert_to_camel_case(list_of_words):
+    """Converts inputted words into CamelCase
+
+    >>> convert_to_camel_case(['snake', 'case'])
+    'SnakeCase'
+    """
+    upper_case_word = [x.capitalize() for x in list_of_words]
+    return ''.join(upper_case_word)
+
+def convert_to_snake_case(list_of_words):
+    """Converts inputted words into snake_case
+
+    >>> convert_to_snake_case(['Camel', 'Case'])
+    'camel_case'
+    """
+    word_with_underscores = '_'.join(list_of_words)
+    return word_with_underscores.lower()
+
 
 # 3. Main
 
