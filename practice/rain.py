@@ -58,8 +58,8 @@ def filter_table(date_to_amt):
 def sort_table_by_year(date_to_amt):
     """Groups all values into new items based on the year of the data.
 
-    >>> sort_table_by_year({'15-NOV-2009': 6, '08-JAN-2009': 0})
-    {'2009': [6, 0]} # How do I make this doctest pass consistently?
+    >>> [(key, sorted(list_val)) for key, list_val in sorted(sort_table_by_year({'15-NOV-2009': 6, '08-JAN-2009': 0}).items())]
+    [('2009', [0, 6])]
     """
     year_to_amts= {}
     for date, amt in date_to_amt.items():
@@ -72,8 +72,8 @@ def sort_table_by_year(date_to_amt):
 def find_year_with_most_rain(year_to_amts):
     """Compares all items and returns the year with the highest value.
 
-    >>> find_year_with_most_rain({'2011': 6, '2012': 14})
-    2012
+    >>> find_year_with_most_rain({'2011': [0, 1, 2, 3], '2012': [2, 3, 4, 5]})
+    '2012'
     """
     total_rain_by_year = sum_yearly_amounts(year_to_amts)
     return max(total_rain_by_year.items(), key=operator.itemgetter(1))[0]
@@ -81,8 +81,8 @@ def find_year_with_most_rain(year_to_amts):
 def sum_yearly_amounts(year_to_amts):
     """Maps the dictionary and sums the values of all items.
 
-    >>> sum_yearly_amounts({'2011': [0, 1, 2, 3], '2012': [2, 3, 4, 5]})
-    {'2011': 6, '2012': 14}
+    >>> sorted(sum_yearly_amounts({'2011': [0, 1, 2, 3], '2012': [2, 3, 4, 5]}).items())
+    [('2011', 6), ('2012', 14)]
     """
     year_to_amts.update({key: sum(value) for key, value in year_to_amts.items()})
     return year_to_amts
