@@ -8,77 +8,59 @@ import operator
 # 2. Define
 
 def import_table():
+    """This imports the table to be read from the file"""
     with open('sunnysiderain.txt') as rain_table:
-        initial_list = rain_table.readlines()
-    stripped_table = strip_table(initial_list)
+        intial_table = rain_table.readlines()
+    stripped_table = strip_table(intial_table)
     return cut_out_items(stripped_table)
 
 def strip_table(table):
-    r"""
+    r"""Strips the table of formatting.
+
     >>> strip_table([''] * 12 + ['A \n'])
     [['A']]
-
-    :param table:
-    :return:
     """
     return [line.strip().split() for line in table[12:]]
 
 def cut_out_items(stripped_table):
-    """
+    """Cuts out unused parts of the imported data.
+
     >>> cut_out_items([['A', 'B', 'C']])
     [['A', 'B']]
-
-    :param stripped_table:
-    :return:
     """
     return [line[:2] for line in stripped_table]
 
-def make_lookup_table(formatted_table):
-    """
-    >>> make_lookup_table([['A', 'B']])
-    {'A': 'B'}
+def get_date_to_amt(table):
+    """Turns data into a dictionary that pairs each date with the rainfall amount on that day.
 
-    :param formatted_table:
-    :return:
+    >>> get_date_to_amt([['A', '3']])
+    {'A': 3}
     """
-    return {key: value for (key, value) in formatted_table}
+    date_to_amt = {key: value for (key, value) in table}
+    return filter_table(date_to_amt)
 
-def find_date_with_most_rain(filtered_table):
-    """
-    >>> find_date_with_most_rain({'A': '1', 'B': '2'})
-    B
+def find_date_with_most_rain(date_to_amt):
+    """Compares all dictionary items and returns the date with the highest value.
 
-    :param lookup_table:
-    :return:
+    >>> find_date_with_most_rain({'A': 1, 'B': 2})
+    'B'
     """
-    return max(filtered_table.items(), key=operator.itemgetter(1))[0]
+    return max(date_to_amt.items(), key=operator.itemgetter(1))[0]
 
-def filter_table(lookup_table): # Check to make sure this works
-    """
+def filter_table(date_to_amt):
+    """Removes dates which have no data from data set.
+
     >>> filter_table({'15-DEC-2010': '-', '24-JUL-2009': '0'})
-    {'24-JUL-2009': '0'}
-    :param lookup_table:
-    :return:
+    {'24-JUL-2009': 0}
     """
-    return {date: int(amt) for date, amt in lookup_table.items() if not '-' == amt}
+    return {date: int(amt) for date, amt in date_to_amt.items() if not '-' == amt}
 
-def find_days_without_value(lookup_table):
+def sort_table_by_year(date_to_amt):
+    """Groups all values into new items based on the year of the data.
+
+    >>> sort_table_by_year({'15-NOV-2009': 6, '08-JAN-2009': 0})
+    {'2009': [6, 0]} # How do I make this doctest pass consistently?
     """
-    >>> find_days_without_value({'15-DEC-2010': '-', '24-JUL-2009': '0'})
-    {'B': '-'}
-
-    :param lookup_table:
-    :return:
-    """
-    days_without_value = {k: v for k, v in lookup_table.items() if '-' in v}
-    return days_without_value
-
-def correct_days_without_value(days_without_value):
-    for key in days_without_value:
-        days_without_value[key] = '0'
-    return days_without_value
-
-def sort_table_by_year(date_to_amt): # Sexier solution- slice off date and month, then sort into buckets based on year key, look at grouping solution on notes
     year_to_amts= {}
     for date, amt in date_to_amt.items():
         year = date[-4:]
@@ -88,29 +70,31 @@ def sort_table_by_year(date_to_amt): # Sexier solution- slice off date and month
     return year_to_amts
 
 def find_year_with_most_rain(year_to_amts):
+    """Compares all items and returns the year with the highest value.
+
+    >>> find_year_with_most_rain({'2011': 6, '2012': 14})
+    2012
+    """
     total_rain_by_year = sum_yearly_amounts(year_to_amts)
     return max(total_rain_by_year.items(), key=operator.itemgetter(1))[0]
 
 def sum_yearly_amounts(year_to_amts):
-    return {item[year:, sum(amts)] for item[year:, amts] in year_to_amts.items()}
+    """Maps the dictionary and sums the values of all items.
 
-
-# total_rain_by_year = {}
-# for item in year_to_amts.items():
-#     for year, amts in item:
-#         if year not in total_rain_by_year:
-#             total_rain_by_year[year] = []
-#         total_rain_by_year[year] += sum[amts]
+    >>> sum_yearly_amounts({'2011': [0, 1, 2, 3], '2012': [2, 3, 4, 5]})
+    {'2011': 6, '2012': 14}
+    """
+    year_to_amts.update({key: sum(value) for key, value in year_to_amts.items()})
+    return year_to_amts
 
 # 3. Main
 
 def main():
     table = import_table()
-    lookup_table = make_lookup_table(table)
-    filtered_table = filter_table(lookup_table)
-    date_with_most_rain = find_date_with_most_rain(filtered_table)
-    table_sorted_by_year = sort_table_by_year(filtered_table)
-    year_with_most_rain = find_year_with_most_rain(table_sorted_by_year)
+    date_to_amt = get_date_to_amt(table)
+    date_with_most_rain = find_date_with_most_rain(date_to_amt)
+    years_to_amts = sort_table_by_year(date_to_amt)
+    year_with_most_rain = find_year_with_most_rain(years_to_amts)
     print('The date with most rain was {}' .format(date_with_most_rain))
     print('The year with the most rain {}' .format(year_with_most_rain))
 
