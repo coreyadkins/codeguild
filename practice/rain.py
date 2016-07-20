@@ -30,39 +30,39 @@ def cut_out_items(stripped_table):
     """
     return [line[:2] for line in stripped_table]
 
-def get_date_to_amt(table):
+def get_day_to_amt(table):
     """Turns data into a dictionary that pairs each date with the rainfall amount on that day.
 
-    >>> get_date_to_amt([['A', '3']])
+    >>> get_day_to_amt([['A', '3']])
     {'A': 3}
     """
-    date_to_amt = {key: value for (key, value) in table}
-    return filter_table(date_to_amt)
+    day_to_amt = {key: value for (key, value) in table}
+    return filter_table(day_to_amt)
 
-def find_date_with_most_rain(date_to_amt):
+def find_date_with_most_rain(day_to_amt):
     """Compares all dictionary items and returns the date with the highest value.
 
     >>> find_date_with_most_rain({'A': 1, 'B': 2})
     'B'
     """
-    return max(date_to_amt.items(), key=operator.itemgetter(1))[0]
+    return max(day_to_amt.items(), key=operator.itemgetter(1))[0]
 
-def filter_table(date_to_amt):
+def filter_table(day_to_amt):
     """Removes dates which have no data from data set.
 
     >>> filter_table({'15-DEC-2010': '-', '24-JUL-2009': '0'})
     {'24-JUL-2009': 0}
     """
-    return {date: int(amt) for date, amt in date_to_amt.items() if not '-' == amt}
+    return {date: int(amt) for date, amt in day_to_amt.items() if not '-' == amt}
 
-def sort_table_by_year(date_to_amt):
+def sort_table_by_year(day_to_amt):
     """Groups all values into new items based on the year of the data.
 
     >>> [(key, sorted(list_val)) for key, list_val in sorted(sort_table_by_year({'15-NOV-2009': 6, '08-JAN-2009': 0}).items())]
     [('2009', [0, 6])]
     """
-    year_to_amts= {}
-    for date, amt in date_to_amt.items():
+    year_to_amts = {}
+    for date, amt in day_to_amt.items():
         year = date[-4:]
         if year not in year_to_amts:
             year_to_amts[year] = []
@@ -87,15 +87,22 @@ def sum_yearly_amounts(year_to_amts):
     year_to_amts.update({key: sum(value) for key, value in year_to_amts.items()})
     return year_to_amts
 
-def
+def get_day_with_highest_average(day_to_amt)
+    """Returns the day of the year with the highest average rainfall.
+
+    # Thought process- Take day_to_amt, (group) into new table based on date, subtracting year, (reduce) each
+    date value into a mean, and then (filter) all values to return result of day with highest average.
+    """
+    date_to_amts = get_date_to_amts(day_to_amt)
+
 
 # 3. Main
 
 def main():
     table = import_table()
-    date_to_amt = get_date_to_amt(table)
-    date_with_most_rain = find_date_with_most_rain(date_to_amt)
-    years_to_amts = sort_table_by_year(date_to_amt)
+    day_to_amt = get_day_to_amt(table)
+    date_with_most_rain = find_date_with_most_rain(day_to_amt)
+    years_to_amts = sort_table_by_year(day_to_amt)
     year_with_most_rain = find_year_with_most_rain(years_to_amts)
     print('The date with most rain was {}' .format(date_with_most_rain))
     print('The year with the most rain {}' .format(year_with_most_rain))
