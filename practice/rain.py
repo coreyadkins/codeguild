@@ -87,6 +87,8 @@ def sum_yearly_amounts(year_to_amts):
     year_to_amts.update({key: sum(value) for key, value in year_to_amts.items()})
     return year_to_amts
 
+def
+
 # 3. Main
 
 def main():
