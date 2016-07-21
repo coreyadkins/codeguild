@@ -17,13 +17,39 @@ def set_up_game():
     """
     hand = Hand([])
     deck = create_deck()
+    game_over = False
     hand.card_list += [draw_card_from_deck(deck)]
     hand.card_list += [draw_card_from_deck(deck)]
+    print('Welcome to Blackjack Deathmatch. My name is Skynet, and I am your dealer. '
+          'Your hand is {}, {}'.format(hand.card_list[0], hand.card_list[1]))
     return deck, hand
 
 
-def create_deck():
-    return create_deck()
+def prompt_for_hit(hand, deck):
+    """Prompts the user if they would like to hit, then runs hit player function if yes."""
+    hit_prompt = input('Would you like to hit? (y/n) ')
+    if hit_prompt == 'y':
+        hit_player(hand, deck)
+    elif hit_prompt == 'n':
+        score = score_hand(hand)
+        print('Alright, your final score is {}'.format(score))
+    score = score_hand(hand)
+    game_over = check_score(score)
+    if game_over == False and hit_prompt == 'y':
+        print('Your new score is {}'.format(score))
+        prompt_for_hit(hand, deck)
+
+
+def check_score(score):
+    if score > 21:
+        print('Bust!')
+        game_over = True
+    elif score == 21:
+        print('Blackjack!')
+        game_over = True
+    elif score < 21:
+        game_over = False
+    return game_over
 
 
 def draw_card_from_deck(deck):
@@ -38,7 +64,8 @@ def hit_player(hand, deck):
     """Draws a card from the deck and adds to hand."""
     new_card = draw_card_from_deck(deck)
     hand.card_list += [new_card]
-    return hand
+    is_deck_empty = check_deck_empty(deck)
+    return hand, is_deck_empty
 
 
 def score_hand(hand):
@@ -68,25 +95,18 @@ def create_deck():
     return deck
 
 
-def is_deck_empty():
+def check_deck_empty(deck):
+    """Checks if the deck is empty, returns bool value if True"""
+    if len(deck.card_list) == 0:
+        is_deck_empty = True
+    else:
+        is_deck_empty = False
+    return is_deck_empty
 
-    
 
 def main():
-    # Add a card to a hand
     deck, hand = set_up_game()
-    print('Your hand is {}, {}'.format(hand.card_list[0], hand.card_list[1]))
-    if_hit = hit_player(hand, deck)
-    # Score a hand
-    hand_score = score_hand(hand)
-    print(hand_score)
-    print(len(deck.card_list))
-    # Return if the score is over 21
-    # Allow a user to type in a hand and have it be converted into a Hand object
-    # Return a new deck that is shuffled
-    # Draw a card off the top of the deck
-    # Return if the deck is empty
-    pass
+    prompt_for_hit(hand, deck)
 
 if __name__ == '__main__':
     main()
