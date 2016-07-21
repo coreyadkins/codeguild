@@ -13,28 +13,34 @@ def set_up_game():
     """Creates deck, and sets up player with hand of two cards."""
     hand = Hand([])
     deck = create_deck()
+    game_over = False
     hand.card_list += [draw_card_from_deck(deck)]
     hand.card_list += [draw_card_from_deck(deck)]
     print('Welcome to Blackjack Deathmatch. My name is Skynet, and I am your dealer. '
           'Your hand is {}, {}'.format(hand.card_list[0], hand.card_list[1]))
-    return deck, hand
+    return deck, hand, game_over
 
 
-def prompt_for_hit(hand, deck):
+def prompt_for_hit(hand, deck, game_over):
     """Prompts the user if they would like to hit, then runs hit player function if yes.
     # Split into smaller parts?
     """
-    hit_prompt = input('Would you like to hit? (y/n) ')
-    if hit_prompt == 'y':
-        hit_player(hand, deck)
-    elif hit_prompt == 'n':
-        score = score_hand(hand)
-        print('Alright, your final score is {}'.format(score))
-    score = score_hand(hand)
-    game_over = check_score(score)
-    if game_over is False and hit_prompt == 'y':
-        print('Your new score is {}'.format(score))
-        prompt_for_hit(hand, deck)
+    while game_over is False:
+        # hit_prompt = input('Would you like to hit? (y/n) ')
+        hit_prompt = 'n'
+        if hit_prompt == 'y':
+            hit_player(hand, deck)
+            score = score_hand(hand)
+            game_over = check_score(score)
+            print('Your new score is {}'.format(score))
+        elif hit_prompt == 'n':
+            score = score_hand(hand)
+            print('Alright, your final score is {}'.format(score))
+            game_over = True
+        if game_over is True:
+            break
+    if game_over is True:
+        print('Game over!')
 
 
 def check_score(score):
@@ -69,6 +75,7 @@ def draw_card_from_deck(deck):
     >>> draw_card_from_deck(Deck([Card('c', '2')]))
     Card('c', '2')
     """
+    # return Card('s', '2')
     return deck.card_list.pop()
 
 
@@ -101,7 +108,7 @@ def score_hand(hand):
             score += 1
     for card in hand.card_list:
         if card.rank == 'a' and score <= 11:
-            score += 11
+            score += 10
     return score
 
 
@@ -133,8 +140,8 @@ def create_deck():
 
 
 def main():
-    deck, hand = set_up_game()
-    prompt_for_hit(hand, deck)
+    deck, hand, game_over = set_up_game()
+    prompt_for_hit(hand, deck, game_over)
 
 if __name__ == '__main__':
     main()
