@@ -10,7 +10,7 @@ class Hand:
         """Returns literal version of output.
 
         >>> repr(Hand([Card('spade', 'A'), Card('heart', 'J')]))
-        "Card([Card('spade', 'A'), Card('heart', 'J')])"
+        "Hand([Card('spade', 'A'), Card('heart', 'J')])"
         """
         return 'Hand({!r})'.format(
             self.card_list

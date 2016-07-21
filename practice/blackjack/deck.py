@@ -10,7 +10,7 @@ class Deck:
         """Returns literal version of output.
 
         >>> repr(Deck([Card('spade', 'A'), Card('heart', 'J')]))
-        "Card([Card('spade', 'A'), Card('heart', 'J')])"
+        "Deck([Card('spade', 'A'), Card('heart', 'J')])"
         """
         return 'Deck({!r})'.format(
             self.card_list

@@ -9,15 +9,10 @@ SUITS = ['h', 'd', 's', 'c']
 RANKS = NAME_CARDS + NUMBER_CARDS + ['a']
 
 
-# Set up variables for suits and ranks
-# Use shuffle function to shuffle deck after creating deck
-
 def set_up_game():
-    """Creates deck, and sets up player with hand of two cards.
-    """
+    """Creates deck, and sets up player with hand of two cards."""
     hand = Hand([])
     deck = create_deck()
-    game_over = False
     hand.card_list += [draw_card_from_deck(deck)]
     hand.card_list += [draw_card_from_deck(deck)]
     print('Welcome to Blackjack Deathmatch. My name is Skynet, and I am your dealer. '
@@ -26,7 +21,9 @@ def set_up_game():
 
 
 def prompt_for_hit(hand, deck):
-    """Prompts the user if they would like to hit, then runs hit player function if yes."""
+    """Prompts the user if they would like to hit, then runs hit player function if yes.
+    # Split into smaller parts?
+    """
     hit_prompt = input('Would you like to hit? (y/n) ')
     if hit_prompt == 'y':
         hit_player(hand, deck)
@@ -35,41 +32,65 @@ def prompt_for_hit(hand, deck):
         print('Alright, your final score is {}'.format(score))
     score = score_hand(hand)
     game_over = check_score(score)
-    if game_over == False and hit_prompt == 'y':
+    if game_over is False and hit_prompt == 'y':
         print('Your new score is {}'.format(score))
         prompt_for_hit(hand, deck)
 
 
 def check_score(score):
+    """Checks the inputted score, determines if the score is a 'Bust!', 'Blackjack, if so, prints corresponding
+    statements, then outputs a value on whether the game is over depending on the score.
+
+    >>> check_score(22)
+    Bust!
+    True
+
+    >>> check_score(21)
+    Blackjack!
+    True
+
+    >>> check_score(20)
+    False
+    """
     if score > 21:
         print('Bust!')
         game_over = True
     elif score == 21:
         print('Blackjack!')
         game_over = True
-    elif score < 21:
+    else:
         game_over = False
     return game_over
 
 
 def draw_card_from_deck(deck):
-    """
-    # Will set this up later to actually draw from deck. For now just generates a random card.
+    """Draws the 'top' card from an inputted deck.
 
+    >>> draw_card_from_deck(Deck([Card('c', '2')]))
+    Card('c', '2')
     """
     return deck.card_list.pop()
 
 
 def hit_player(hand, deck):
-    """Draws a card from the deck and adds to hand."""
+    """Draws a card from the deck and adds to hand.
+
+    >>> hit_player(Hand([Card('c', '2')]), Deck([Card('h', 'a')]))
+    Hand([Card('c', '2'), Card('h', 'a')])
+    >>> hit_player(Hand([Card('c', '2')]), Deck([Card('h', 'a'), Card('s', 'k')]))
+    Hand([Card('c', '2'), Card('s', 'k')])
+    """
     new_card = draw_card_from_deck(deck)
     hand.card_list += [new_card]
-    is_deck_empty = check_deck_empty(deck)
-    return hand, is_deck_empty
+    return hand
 
 
 def score_hand(hand):
-    """Scores a given hand."""
+    """Scores a given hand.
+
+    >>> score_hand(Hand([Card('c', '2'), Card('s', 'k')]))
+    12
+    """
     score = 0
     for card in hand.card_list:
         if card.rank in NAME_CARDS:
@@ -95,13 +116,20 @@ def create_deck():
     return deck
 
 
-def check_deck_empty(deck):
-    """Checks if the deck is empty, returns bool value if True"""
-    if len(deck.card_list) == 0:
-        is_deck_empty = True
-    else:
-        is_deck_empty = False
-    return is_deck_empty
+# def check_deck_empty(deck):
+#     """Checks if the deck is empty, returns bool value if True.
+#     >>> check_deck_empty(Deck([]))
+#     True
+#     >>> check_deck_empty(Deck([Card('d', '2')]))
+#     False
+#     """
+#     if len(deck.card_list) == 0:
+#         is_deck_empty = True
+#     else:
+#         is_deck_empty = False
+#     return is_deck_empty
+
+# def pretty_print_cards():
 
 
 def main():
