@@ -2,6 +2,7 @@ from hand import Hand
 from card import Card
 from deck import Deck
 from random import shuffle
+from dealer import dealer_hit_decision
 
 NAME_CARDS = ['j', 'q', 'k']
 NUMBER_CARDS = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
@@ -11,36 +12,83 @@ RANKS = NAME_CARDS + NUMBER_CARDS + ['a']
 
 def set_up_game():
     """Creates deck, and sets up player with hand of two cards."""
-    hand = Hand([])
+    player_hand = Hand([])
+    dealer_hand = Hand([])
     deck = create_deck()
     game_over = False
-    hand.card_list += [draw_card_from_deck(deck)]
-    hand.card_list += [draw_card_from_deck(deck)]
+    player_hand.card_list += [draw_card_from_deck(deck)]
+    player_hand.card_list += [draw_card_from_deck(deck)]
+    dealer_hand.card_list += [draw_card_from_deck(deck)]
+    dealer_hand.card_list += [draw_card_from_deck(deck)]
     print('Welcome to Blackjack Deathmatch. My name is Skynet, and I am your dealer. '
-          'Your hand is {}, {}'.format(hand.card_list[0], hand.card_list[1]))
-    return deck, hand, game_over
+          'Your hand is {}, {}'.format(player_hand.card_list[0], player_hand.card_list[1]))
+    return deck, player_hand, game_over, dealer_hand
 
 
-def prompt_for_hit(hand, deck, game_over):
+def run_game(player_hand, deck, game_over, dealer_hand):
     """Prompts the user if they would like to hit, then runs hit player function if yes.
     # Split into smaller parts?
     """
     while game_over is False:
-        # hit_prompt = input('Would you like to hit? (y/n) ')
-        hit_prompt = 'n'
+        hit_prompt = input('Would you like to hit? (y/n) ')
         if hit_prompt == 'y':
-            hit_player(hand, deck)
-            score = score_hand(hand)
-            game_over = check_score(score)
-            print('Your new score is {}'.format(score))
+            hit_player(player_hand, deck)
+            dealer_hand = dealer_calc_to_hit(dealer_hand, deck)
+            player_score = score_hand(player_hand)
+            game_over = check_score(player_score)
+            dealer_score = score_hand(dealer_hand)
+            if game_over is False:
+                dealer_score = score_hand(dealer_hand)
+                game_over = check_score(dealer_score)
+            print('Your new card was {}. Your new hand is {}'.format(player_hand.card_list[-1], player_hand.card_list))
         elif hit_prompt == 'n':
-            score = score_hand(hand)
-            print('Alright, your final score is {}'.format(score))
+            dealer_hand = dealer_calc_to_hit(dealer_hand, deck)
             game_over = True
-        if game_over is True:
-            break
     if game_over is True:
-        print('Game over!')
+        player_wins = check_who_wins(player_score, dealer_score)
+        if player_wins is True:
+            print('You win!\nYour final score was {}. The dealers was {}. You survive this time..'
+                  .format(player_score, dealer_score))
+        elif player_wins is False:
+            print('You lose!\nYour final score was {}. The dealers was {}. Prepare for termination.'
+                  .format(player_score, dealer_score))
+        elif player_wins is None:
+            print('Push! Neither of us win? Does not compute..')
+
+
+def dealer_calc_to_hit(dealer_hand, deck):
+    """Calculates whether the dealer will hit, if the dealer does, hits.
+
+    
+    """
+    dealer_score = score_hand(dealer_hand)
+    does_dealer_hit = dealer_hit_decision(dealer_score)
+    if does_dealer_hit is True:
+        hit_player(dealer_hand, deck)
+    return dealer_hand
+
+
+def check_who_wins(player_score, dealer_score):
+    """Checks the scores of player and dealer, returns the winner based on a bool"""
+    if player_score > dealer_score:
+        if player_score <= 21:
+            player_wins = True
+        elif player_score > 21:
+            if dealer_score > 21:
+                player_wins = None
+            else:
+                player_wins = False
+    elif player_score < dealer_score:
+        if dealer_score < 21:
+            player_wins = False
+        elif dealer_score > 21:
+            if player_score > 21:
+                player_wins = None
+            else:
+                player_wins = True
+    elif player_score == dealer_score:
+        player_wins = None
+    return player_wins
 
 
 def check_score(score):
@@ -59,10 +107,8 @@ def check_score(score):
     False
     """
     if score > 21:
-        print('Bust!')
         game_over = True
     elif score == 21:
-        print('Blackjack!')
         game_over = True
     else:
         game_over = False
@@ -75,7 +121,7 @@ def draw_card_from_deck(deck):
     >>> draw_card_from_deck(Deck([Card('c', '2')]))
     Card('c', '2')
     """
-    # return Card('s', '2')
+    # return Card('s', '8')
     return deck.card_list.pop()
 
 
@@ -140,8 +186,8 @@ def create_deck():
 
 
 def main():
-    deck, hand, game_over = set_up_game()
-    prompt_for_hit(hand, deck, game_over)
+    deck, player_hand, game_over, dealer_hand = set_up_game()
+    run_game(player_hand, deck, game_over, dealer_hand)
 
 if __name__ == '__main__':
     main()
