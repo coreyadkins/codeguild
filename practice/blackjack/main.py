@@ -8,7 +8,9 @@ NAME_CARDS = ['j', 'q', 'k']
 NUMBER_CARDS = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
 SUITS = ['h', 'd', 's', 'c']
 RANKS = NAME_CARDS + NUMBER_CARDS + ['a']
-
+PRETTY_SUITS = {'h': 'Hearts', 'd': 'Diamonds', 's': 'Spades', 'c':'Clubs'}
+PRETTY RANKS = {'2': 'Two', '3': 'Three', '4': 'Four', '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight',
+                '9': 'Nine', '10': 'Ten', 'j': 'Jack', 'q': 'Queen', 'k': 'King', 'a': 'Ace'}
 
 def set_up_game():
     """Creates deck, and sets up player with hand of two cards."""
@@ -59,7 +61,7 @@ def run_game(player_hand, deck, game_over, dealer_hand):
 def dealer_calc_to_hit(dealer_hand, deck):
     """Calculates whether the dealer will hit, if the dealer does, hits.
 
-    
+
     """
     dealer_score = score_hand(dealer_hand)
     does_dealer_hit = dealer_hit_decision(dealer_score)
@@ -182,7 +184,10 @@ def create_deck():
 #         is_deck_empty = False
 #     return is_deck_empty
 
-# def pretty_print_cards():
+def pretty_print_cards(card):
+    for card in hand.card_list:
+        if card.suit in PRETTY_SUITS:
+            pretty_card.suit =
 
 
 def main():
