@@ -9,8 +9,8 @@ NUMBER_CARDS = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
 SUITS = ['h', 'd', 's', 'c']
 RANKS = NAME_CARDS + NUMBER_CARDS + ['a']
 PRETTY_SUITS = {'h': 'Hearts', 'd': 'Diamonds', 's': 'Spades', 'c':'Clubs'}
-PRETTY RANKS = {'2': 'Two', '3': 'Three', '4': 'Four', '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight',
-                '9': 'Nine', '10': 'Ten', 'j': 'Jack', 'q': 'Queen', 'k': 'King', 'a': 'Ace'}
+# PRETTY RANKS = {'2': 'Two', '3': 'Three', '4': 'Four', '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight',
+#                 '9': 'Nine', '10': 'Ten', 'j': 'Jack', 'q': 'Queen', 'k': 'King', 'a': 'Ace'}
 
 def set_up_game():
     """Creates deck, and sets up player with hand of two cards."""
@@ -47,6 +47,8 @@ def run_game(player_hand, deck, game_over, dealer_hand):
             dealer_hand = dealer_calc_to_hit(dealer_hand, deck)
             game_over = True
     if game_over is True:
+        player_score = score_hand(player_hand)
+        dealer_score = score_hand(dealer_hand)
         player_wins = check_who_wins(player_score, dealer_score)
         if player_wins is True:
             print('You win!\nYour final score was {}. The dealers was {}. You survive this time..'
@@ -72,6 +74,7 @@ def dealer_calc_to_hit(dealer_hand, deck):
 
 def check_who_wins(player_score, dealer_score):
     """Checks the scores of player and dealer, returns the winner based on a bool"""
+    # Fix and remove nonetype object as setting. Doesn't work.
     if player_score > dealer_score:
         if player_score <= 21:
             player_wins = True
@@ -184,10 +187,10 @@ def create_deck():
 #         is_deck_empty = False
 #     return is_deck_empty
 
-def pretty_print_cards(card):
-    for card in hand.card_list:
-        if card.suit in PRETTY_SUITS:
-            pretty_card.suit =
+# def pretty_print_cards(card):
+#     for card in hand.card_list:
+#         if card.suit in PRETTY_SUITS:
+#             pretty_card.suit =
 
 
 def main():
