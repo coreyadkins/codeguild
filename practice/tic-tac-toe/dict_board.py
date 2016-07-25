@@ -30,3 +30,19 @@ class DictTTTBoard:
             self.y == other.y and
             self.token == other.token
         )
+
+    def place_token(self, x, y, token):
+        """Adds token to dict which keeps track of token coordinates. Places a character string at a given coordinate,
+        top left is 0, 0, x is horizontal position, y is vertical position.
+
+        """
+
+    def calc_winner():
+        """Calculates what token character string has won or None if no one has.
+
+        """
+
+    def __str__():
+        """Returns a pretty-printed picture of the board.
+
+        """
