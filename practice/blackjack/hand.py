@@ -4,7 +4,7 @@ from card import Card
 
 
 class Hand:
-    """This class holds list of values of cards in hand"""
+    """This class represents a hand of cards, holding a list of Card class objects."""
     def __init__(self, card_list):
         self.card_list = card_list
 
@@ -29,3 +29,15 @@ class Hand:
         return (
             self.card_list == other.card_list
         )
+
+    def score_hand(self):
+        """Scores a given hand.
+        >>> hand = Hand([Card('c', '2'), Card('s', 'k')])
+        >>> hand.score_hand()
+        12
+        """
+        score = sum(card.score_card() for card in self.card_list)
+        for card in self.card_list:
+            if card.rank == 'a' and score <= 11:
+                score += 10
+        return score
