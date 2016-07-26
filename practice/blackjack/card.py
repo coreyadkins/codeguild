@@ -1,8 +1,12 @@
+"""Relates to functions and classes that work with individual cards in the blackjack deck."""
+
+
 class Card:
     """This class holds card values"""
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
+
     def __repr__(self):
         """Returns literal version of output.
 
@@ -13,6 +17,7 @@ class Card:
             self.suit,
             self.rank
         )
+
     def __eq__(self, other):
         """Defines equality.
 
