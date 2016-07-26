@@ -1,9 +1,15 @@
+"""This module performs the functions for Tic-Tac-Toe (TTT) program of placing a token on the board, determining the
+winner of a game, and returning a str version of the board, using list data type.
+"""
+
+
 class ListTTTBoard:
+    """Contains a blank TTT board as list items, and commands to modify the board , score game, and return str version
+    of board.
+    """
     def __init__(self):
         """Defines input value."""
         self._rows = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
-        self._columns = [[], [], []]
-        self._diags = [[], []]
 
     def __repr__(self):
         """Returns real version.
@@ -19,10 +25,7 @@ class ListTTTBoard:
         >>> ListTTTBoard() == ListTTTBoard()
         (True, True)
         """
-        return (
-            self._rows == other._rows,
-            self._columns == other._columns
-        )
+        return self._rows == other._rows
 
     def place_token(self, x, y, token):
         """Adds token to a running list which represents board layout. Places a character string at a given coordinate,
@@ -65,8 +68,8 @@ class ListTTTBoard:
                 return winner
             else:
                 winner = None
-        self.table_as_columns()
-        for column in self._columns:
+        columns = self.table_as_columns()
+        for column in columns:
             if len(set(column)) <= 1:
                 winner = column[0]
             else:
@@ -75,8 +78,8 @@ class ListTTTBoard:
                 winner = None
             if winner is not None:
                 return winner
-        self.table_as_diags()
-        for diag in self._diags:
+        diags = self.table_as_diags()
+        for diag in diags:
             if len(set(diag)) <= 1:
                 winner = diag[0]
             if winner == ' ':
@@ -91,13 +94,11 @@ class ListTTTBoard:
         >>> X = ListTTTBoard()
         >>> X._rows = [['O', 'O', 'O'], ['X', 'X', 'O'], ['X', 'O', ' ']]
         >>> X.__str__()
-        O|O|O
+        'O|O|O
         X|X|O
-        X|O|
+        X|O| '
         """
-        for row in self._rows:
-            joined_row = '|'.join(row)
-            print(joined_row)
+        return '|'.join(row)
 
     def table_as_columns(self):
         """Returns table sorted into rows as table sorted into columns.
@@ -105,12 +106,13 @@ class ListTTTBoard:
         >>> X = ListTTTBoard()
         >>> X._rows = [['X', 'O', ' '], ['X', 'X', 'O'], ['X', 'O', ' ']]
         >>> X.table_as_columns()
-        >>> X._columns
         [['X', 'X', 'X'], ['O', 'X', 'O'], [' ', 'O', ' ']]
         """
+        columns = [[], [], []]
         for row in self._rows:
             for item in range(len(row)):
-                self._columns[item].append(row[item])
+                columns[item].append(row[item])
+        return columns
 
     def table_as_diags(self):
         """Creates two lists which represent the diaganol axis on the TTT Board.
@@ -118,13 +120,13 @@ class ListTTTBoard:
         >>> X = ListTTTBoard()
         >>> X._rows = [['Y', 'O', ' '], ['X', 'Y', 'O'], [' ', 'O', 'Y']]
         >>> X.table_as_diags()
-        >>> X._diags
         [['Y', 'Y', 'Y'], [' ', 'Y', ' ']]
         """
-        self._diags[0].append(self._rows[0][0])
-        self._diags[0].append(self._rows[1][1])
-        self._diags[0].append(self._rows[2][2])
-        self._diags[1].append(self._rows[0][2])
-        self._diags[1].append(self._rows[1][1])
-        self._diags[1].append(self._rows[2][0])
-li
+        diags = [[], []]
+        diags[0].append(self._rows[0][0])
+        diags[0].append(self._rows[1][1])
+        diags[0].append(self._rows[2][2])
+        diags[1].append(self._rows[0][2])
+        diags[1].append(self._rows[1][1])
+        diags[1].append(self._rows[2][0])
+        return diags
