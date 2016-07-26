@@ -4,7 +4,7 @@ winner of a game, and returning a str version of the board, using list data type
 
 
 class ListTTTBoard:
-    """Contains a blank TTT board as list items, and commands to modify the board , score game, and return str version
+    """Contains a blank TTT board as list items, and commands to modify the board, score game, and return str version
     of board.
     """
     def __init__(self):
@@ -23,7 +23,7 @@ class ListTTTBoard:
         """Defines eauality.
 
         >>> ListTTTBoard() == ListTTTBoard()
-        (True, True)
+        True
         """
         return self._rows == other._rows
 
@@ -53,59 +53,41 @@ class ListTTTBoard:
         >>> X._rows = [['Y', 'O', ' '], ['X', 'Y', 'O'], [' ', 'O', 'Y']]
         >>> X.calc_winner()
         'Y'
-        >>> X = ListTTTBoard()
-        >>> X._rows = [[' ', ' ', ' '], ['X', ' ', 'O'], [' ', 'O', 'X']]
-        >>> X.calc_winner() is not None
-        True
         """
-        winner = None
-        for row in self._rows:
-            if len(set(row)) <= 1:
-                winner = row[0]
-            if winner == ' ':
-                winner = None
-            if winner is not None:
-                return winner
-            else:
-                winner = None
-        columns = self.table_as_columns()
-        for column in columns:
-            if len(set(column)) <= 1:
-                winner = column[0]
-            else:
-                winner = None
-            if winner == ' ':
-                winner = None
-            if winner is not None:
-                return winner
-        diags = self.table_as_diags()
-        for diag in diags:
-            if len(set(diag)) <= 1:
-                winner = diag[0]
-            if winner == ' ':
-                winner = None
-            if winner is not None:
-                return winner
+        _test_list = self._create_test_list()
+        winner = _check_for_winner(_test_list)
         return winner
 
     def __str__(self):
-        """Returns a pretty-printed picture of the board.
+        """Returns a pretty-printed string of the board.
+
+        >>> X = ListTTTBoard()
+        >>> X._rows = [['O', 'O', 'O'], ['X', ' ', 'X'], ['X', 'O', 'O']]
+        >>> print(X.__str__())
+        O|O|O
+        X| |X
+        X|O|O
+        """
+        joined_rows = ['|'.join(row) for row in self._rows]
+        return '\n'.join(joined_rows)
+
+    def _create_test_list(self):
+        """Creates a list of lists which contain all possible winning permutations to check against.
 
         >>> X = ListTTTBoard()
         >>> X._rows = [['O', 'O', 'O'], ['X', 'X', 'O'], ['X', 'O', ' ']]
-        >>> X.__str__()
-        'O|O|O
-        X|X|O
-        X|O| '
+        >>> X._create_test_list()
+        [['O', 'O', 'O'], ['X', 'X', 'O'], ['X', 'O', ' '], ['O', 'X', 'X'], ['O', 'X', 'O'], ['O', 'O', ' '], ['O', 'X\
+', ' '], ['O', 'X', 'X']]
         """
-        return '|'.join(row)
+        return self._rows + self._table_as_columns() + self._table_as_diags()
 
-    def table_as_columns(self):
+    def _table_as_columns(self):
         """Returns table sorted into rows as table sorted into columns.
 
         >>> X = ListTTTBoard()
         >>> X._rows = [['X', 'O', ' '], ['X', 'X', 'O'], ['X', 'O', ' ']]
-        >>> X.table_as_columns()
+        >>> X._table_as_columns()
         [['X', 'X', 'X'], ['O', 'X', 'O'], [' ', 'O', ' ']]
         """
         columns = [[], [], []]
@@ -114,19 +96,43 @@ class ListTTTBoard:
                 columns[item].append(row[item])
         return columns
 
-    def table_as_diags(self):
-        """Creates two lists which represent the diaganol axis on the TTT Board.
+    def _table_as_diags(self):
+        """Returns table sorted into rows as two lists which represent the two diagonal axis on the TTT Board.
 
         >>> X = ListTTTBoard()
         >>> X._rows = [['Y', 'O', ' '], ['X', 'Y', 'O'], [' ', 'O', 'Y']]
-        >>> X.table_as_diags()
+        >>> X._table_as_diags()
         [['Y', 'Y', 'Y'], [' ', 'Y', ' ']]
         """
         diags = [[], []]
-        diags[0].append(self._rows[0][0])
-        diags[0].append(self._rows[1][1])
-        diags[0].append(self._rows[2][2])
-        diags[1].append(self._rows[0][2])
-        diags[1].append(self._rows[1][1])
-        diags[1].append(self._rows[2][0])
+        i = 0
+        for rows in self._rows:
+            diags[0].append(rows[i])
+            i += 1
+        i = 2
+        for rows in self._rows:
+            diags[1].append(rows[i])
+            i -= 1
         return diags
+
+
+def _check_for_winner(iterable):
+    """Checks whether a given list of items wins the game, meaning that all strs in the item are equivalent.
+
+    >>> lists = [['X', 'X', 'X'], ['X', 'O', ' '], ['X', 'O', 'O']]
+    >>> _check_for_winner(lists)
+    'X'
+
+    >>> lists = [['X', 'O', 'X'], [' ', ' ', ' '], ['X', 'O', 'O']]
+    >>> _check_for_winner(lists) is None
+    True
+
+    Filters out blank space giving a false positive.
+    """
+    winner = None
+    for item in iterable:
+        if len(set(item)) <= 1:
+            winner = item[0]
+            if winner == ' ':
+                winner = None
+    return winner

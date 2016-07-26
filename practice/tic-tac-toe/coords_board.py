@@ -1,48 +1,55 @@
+"""This module performs the functions for Tic-Tac-Toe (TTT) program of placing a token on the board, determining the
+winner of a game, and returning a str version of the board, using tuples data type.
+"""
+from collections import namedtuple
+
 class CoordsTTTBoard:
-    def __init__(self, x, y, token):
+    """Contains a blank TTT board as list of tuples items, and commands to modify the board, score game, and return str
+    version of board.
+    """
+    def __init__(self):
         """Defines input value."""
-        self.x = x
-        self.y = y
-        self.token = token
+        self._list_of_tokens = []
 
     def __repr__(self):
         """Returns real version.
 
-        >>> repr(CoordsTTTBoard(0, 0, 'X'))
-        "CoordsTTTBoard(0, 0, 'X')"
+        >>> repr(CoordsTTTBoard())
+        'CoordsTTTBoard()'
         """
-        return 'CoordsTTTBoard({}, {}, {!r})'.format(
-            self.x,
-            self.y,
-            self.token
-        )
+        return 'CoordsTTTBoard()'
 
     def __eq__(self, other):
         """Defines eauality.
 
-        >>> CoordsTTTBoard(0, 0, 'X') == CoordsTTTBoard(0, 0, 'X')
+        >>> CoordsTTTBoard() == CoordsTTTBoard()
         True
-        >>> CoordsTTTBoard(0, 0, 'X') == CoordsTTTBoard(0, 1, 'X')
-        False
         """
-        return (
-            self.x == other.x and
-            self.y == other.y and
-            self.token == other.token
-        )
+        return self._list_of_tokens == other._list_of_tokens
 
     def place_token(self, x, y, token):
-        """Adds token to a list of tuples which keeps track of token coordinates. Places a character string at a given coordinate,
-        top left is 0, 0, x is horizontal position, y is vertical position.
+        """Adds token to a running list of tuples which represents board layout.
 
+        >>> X = CoordsTTTBoard()
+        >>> X.place_token(1, 1, 'X')
+        >>> X._list_of_tokens
+        [(1, 1, 'X')]
         """
+        self._list_of_tokens.append(tuple([x, y, token]))
 
-    def calc_winner():
+    def calc_winner(self):
         """Calculates what token character string has won or None if no one has.
 
+        >>> X = CoordsTTTBoard()
+        >>> X._list_of_tokens = [(1, 1, 'X'), (1, 0, 'X'), (1, 2, 'X')]
+        >>> X.calc_winner()
+        'X'
         """
+        for token in self._list_of_tokens:
+            
 
-    def __str__():
-        """Returns a pretty-printed picture of the board.
+
+    def __str__(self):
+        """Returns a pretty-printed string of the board.
 
         """

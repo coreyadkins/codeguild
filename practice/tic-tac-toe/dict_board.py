@@ -1,48 +1,51 @@
+"""This module performs the functions for Tic-Tac-Toe (TTT) program of placing a token on the board, determining the
+winner of a game, and returning a str version of the board, using dict data type.
+"""
+
+
 class DictTTTBoard:
-    def __init__(self, x, y, token):
+    """Contains a blank TTT board as dict items, and commands to modify the board, score game, and return str version
+    of board.
+    """
+    def __init__(self):
         """Defines input value."""
-        self.x = x
-        self.y = y
-        self.token = token
+        self._tokens_to_coords = {}
 
     def __repr__(self):
         """Returns real version.
 
-        >>> repr(DictTTTBoard(0, 0, 'X'))
-        "DictTTTBoard(0, 0, 'X')"
+        >>> repr(DictTTTBoard())
+        'DictTTTBoard()'
         """
-        return 'DictTTTBoard({}, {}, {!r})'.format(
-            self.x,
-            self.y,
-            self.token
-        )
+        return 'DictTTTBoard()'
 
     def __eq__(self, other):
         """Defines eauality.
 
-        >>> DictTTTBoard(0, 0, 'X') == DictTTTBoard(0, 0, 'X')
+        >>> DictTTTBoard() == DictTTTBoard()
         True
-        >>> DictTTTBoard(0, 0, 'X') == DictTTTBoard(0, 1, 'X')
-        False
         """
-        return (
-            self.x == other.x and
-            self.y == other.y and
-            self.token == other.token
-        )
+        return self._tokens_to_coords == other._tokens_to_coords
 
     def place_token(self, x, y, token):
-        """Adds token to dict which keeps track of token coordinates. Places a character string at a given coordinate,
-        top left is 0, 0, x is horizontal position, y is vertical position.
+        """Uses grouping to add token as a new key item in a dictionary, all coordinates associating with that token are
+        stored in the value as a list of tuples.
 
+        >>> X = DictTTTBoard()
+        >>> X.place_token(0, 0, 'X')
+        >>> X._tokens_to_coords
+        {'X': (0, 0)}
         """
+        token_as_dict = dict(key=token, value=[(x, y)])
+        key = token_as_dict.keys()
+        self.append_to_tokens_to_coords(token_as_dict, key)
 
-    def calc_winner():
+    def calc_winner(self):
         """Calculates what token character string has won or None if no one has.
 
         """
 
-    def __str__():
-        """Returns a pretty-printed picture of the board.
+    def __str__(self):
+        """Returns a pretty-printed string of the board.
 
         """
