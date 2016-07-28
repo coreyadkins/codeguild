@@ -46,6 +46,7 @@ class CoordsTTTBoard:
         'X'
         """
         for token in self._list_of_tokens:
+            if token[0]
             
 
 
