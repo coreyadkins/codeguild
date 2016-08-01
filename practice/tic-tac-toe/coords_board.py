@@ -74,7 +74,6 @@ class CoordsTTTBoard:
                 winner = item
         return winner
 
-
     def __str__(self):
         """Returns a pretty-printed string of the board.
 
@@ -86,35 +85,22 @@ class CoordsTTTBoard:
          |O|O
         X|O|O
         """
-        list_0 = [' ', ' ', ' ']
-        list_1 = [' ', ' ', ' ']
-        list_2 = [' ', ' ', ' ']
+        row_1 = [' ', ' ', ' ']
+        row_2 = [' ', ' ', ' ']
+        row_3 = [' ', ' ', ' ']
         # x = itemgetter(0)
         # y = itemgetter(1)
         # token = itemgetter(2)
         for item in self._list_of_tokens:
             x = item[0]
-            if item[1] == 0:
-                list_0[x] = item[2]
-            if item[1] == 1:
-                list_1[x] = item[2]
-            if item[1] == 2:
-                list_2[x] = item[2]
-        list_0 = '|'.join(list_0)
-        list_1 = '|'.join(list_1)
-        list_2 = '|'.join(list_2)
-        return str(list_0 + '\n'+ list_1 + '\n' + list_2)
-
-
-
-
-def group_by(iterable, key):
-    """Place each item in an iterable into a bucket based on calling the key
-    function on the item."""
-    group_to_items = {}
-    for item in iterable:
-        group = key(item)
-        if group not in group_to_items:
-            group_to_items[group] = []
-        group_to_items[group].append(item)
-    return group_to_items
+            y = item[1]
+            if y == 0:
+                row_1[x] = item[2]
+            if y == 1:
+                row_2[x] = item[2]
+            if y == 2:
+                row_3[x] = item[2]
+        row_1 = '|'.join(row_1)
+        row_2 = '|'.join(row_2)
+        row_3 = '|'.join(row_3)
+        return str(row_1 + '\n'+ row_2 + '\n' + row_3)
