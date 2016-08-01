@@ -136,15 +136,3 @@ def _check_for_winner(iterable):
             if winner == ' ':
                 winner = None
     return winner
-
-
-def group_by(iterable, key):
-    """Place each item in an iterable into a bucket based on calling the key
-    function on the item."""
-    group_to_items = {}
-    for item in iterable:
-        group = key(item)
-        if group not in group_to_items:
-            group_to_items[group] = []
-        group_to_items[group].append(item)
-    return group_to_items
