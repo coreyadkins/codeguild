@@ -47,12 +47,21 @@ class CoordsTTTBoard:
         """Calculates what token character string has won or None if no one has.
 
         >>> X = CoordsTTTBoard()
-        >>> X._list_of_tokens = [(1, 1, 'X'), (1, 0, 'X'), (1, 2, 'X')]
+        >>> X._list_of_tokens = [(1, 1, 'X'), (1, 0, 'X'), (1, 2, 'X'), (1, 1, 'O'), (2, 1, 'O')]
         >>> X.calc_winner()
         'X'
+        >>> X = CoordsTTTBoard()
+        >>> X._list_of_tokens = [(1, 0, 'X'), (1, 1, 'O'), (2, 1, 'X')]
+        >>> X.calc_winner() is None
+        True
+        >>> X = CoordsTTTBoard()
+        >>> X._list_of_tokens = [(1, 1, 'X'), (1, 0, 'X'), (1, 2, 'O'), (1, 1, 'O'), (2, 1, 'O')]
+        >>> X.calc_winner() is None
+        True
         """
         coords_to_token = {}
         key = itemgetter(0)
+        winner = None
         for token in self._list_of_tokens:
             item = (token[2], (token[0], token[1]))
             coords = (token[0], token[1])
@@ -61,18 +70,43 @@ class CoordsTTTBoard:
                 coords_to_token[group] = []
             coords_to_token[group].append(coords)
         for item in coords_to_token:
-            for combination in WINNING_COMBINATIONS:
-                if coords_to_token.values[item]() in combination:
-                    winner = item.keys()
-                else:
-                    winner = None
+            if sorted(coords_to_token[item]) in WINNING_COMBINATIONS:
+                winner = item
         return winner
 
 
-    # def __str__(self):
-    #     """Returns a pretty-printed string of the board.
-    #
-    #     """
+    def __str__(self):
+        """Returns a pretty-printed string of the board.
+
+        >>> X = CoordsTTTBoard()
+        >>> X._list_of_tokens = [(0, 2, 'X'), (2, 0, 'X'), (2, 2, 'O'), (1, 0, 'X'), (1, 2, 'O'), (1, 1, 'O'), \
+                                (2, 1, 'O')]
+        >>> print(X.__str__())
+         |X|X
+         |O|O
+        X|O|O
+        """
+        list_0 = [' ', ' ', ' ']
+        list_1 = [' ', ' ', ' ']
+        list_2 = [' ', ' ', ' ']
+        # x = itemgetter(0)
+        # y = itemgetter(1)
+        # token = itemgetter(2)
+        for item in self._list_of_tokens:
+            x = item[0]
+            if item[1] == 0:
+                list_0[x] = item[2]
+            if item[1] == 1:
+                list_1[x] = item[2]
+            if item[1] == 2:
+                list_2[x] = item[2]
+        list_0 = '|'.join(list_0)
+        list_1 = '|'.join(list_1)
+        list_2 = '|'.join(list_2)
+        return str(list_0 + '\n'+ list_1 + '\n' + list_2)
+
+
+
 
 def group_by(iterable, key):
     """Place each item in an iterable into a bucket based on calling the key
