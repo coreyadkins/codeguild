@@ -79,7 +79,7 @@ def compare_values(first_value, second_value):
     """
     if first_value == second_value:
         is_valid = True
-    else:
+
         is_valid = False
     return is_valid
 

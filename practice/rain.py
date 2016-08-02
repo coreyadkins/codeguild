@@ -59,7 +59,7 @@ def filter_table(date_to_amt):
     >>> filter_table({'15-DEC-2010': '-', '24-JUL-2009': '0'})
     {'24-JUL-2009': 0}
     """
-    return {date: int(amt) for date, amt in date_to_amt.items() if amt in '-'}
+    return {date: int(amt) for date, amt in date_to_amt.items() if amt not in '-'}
 
 
 def sort_table_by_year(date_to_amt):
@@ -73,12 +73,11 @@ def sort_table_by_year(date_to_amt):
 
     year_to_amts = {}
     for date, amt in date_to_amt.items():
-        group_key
-    #     year = date[-4:]
-    #     if year not in year_to_amts:
-    #         year_to_amts[year] = []
-    #     year_to_amts[year] += [amt]
-    # return year_to_amts
+        year = date[-4:]
+        if year not in year_to_amts:
+            year_to_amts[year] = []
+        year_to_amts[year] += [amt]
+    return year_to_amts
 
 
 def find_year_with_most_rain(year_to_amts):
@@ -97,8 +96,7 @@ def sum_yearly_amounts(year_to_amts):
     >>> sorted(sum_yearly_amounts({'2011': [0, 1, 2, 3], '2012': [2, 3, 4, 5]}).items())
     [('2011', 6), ('2012', 14)]
     """
-    year_to_amts.update({key: sum(value) for key, value in year_to_amts.items()})
-    return year_to_amts
+    return {key: sum(value) for key, value in year_to_amts.items()}
 
 # 3. Main
 
