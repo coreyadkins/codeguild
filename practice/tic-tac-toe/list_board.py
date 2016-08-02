@@ -90,10 +90,8 @@ class ListTTTBoard:
         >>> X._table_as_columns()
         [['X', 'X', 'X'], ['O', 'X', 'O'], [' ', 'O', ' ']]
         """
-        columns = [[], [], []]
-        for row in self._rows:
-            for item in range(len(row)):
-                columns[item].append(row[item])
+        column_1, column_2, column_3 = zip(*self._rows)
+        columns = [list(column_1), list(column_2), list(column_3)]
         return columns
 
     def _table_as_diags(self):
@@ -117,7 +115,7 @@ class ListTTTBoard:
 
 
 def _check_for_winner(iterable):
-    """Checks whether a given list of items wins the game, meaning that all strs in the item are equivalent.
+    """Checks whether a given list of items wins the game, meaning that all strs in the token are equivalent.
 
     >>> lists = [['X', 'X', 'X'], ['X', 'O', ' '], ['X', 'O', 'O']]
     >>> _check_for_winner(lists)

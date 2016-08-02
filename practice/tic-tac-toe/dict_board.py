@@ -2,10 +2,6 @@
 winner of a game, and returning a str version of the board, using dict data type.
 """
 
-WINNING_COMBINATIONS = [[(0, 0), (1, 0), (2, 0)], [(0, 0), (0, 1), (0, 2)], [(1, 0), (1, 1), (1, 2)], [(0, 1), (1, 1),
-                                                                                                       (1, 2)],
-                        [(2, 0), (2, 1), (2, 2)], [(0, 2), (1, 2), (2, 2)], [(0, 0), (1, 1), (2, 2)], [(2, 0), (1, 1),
-                                                                                                       (0, 2)]]
 
 class DictTTTBoard:
     """Contains a blank TTT board as dict items, and commands to modify the board, score game, and return str version
@@ -57,9 +53,10 @@ class DictTTTBoard:
         True
         """
         winner = None
-        for item in self._tokens_to_coords:
-            if sorted(self._tokens_to_coords[item]) in WINNING_COMBINATIONS:
-                winner = item
+        winning_combinations = _get_winning_combinations()
+        for token in self._tokens_to_coords:
+            if sorted(self._tokens_to_coords[token]) in winning_combinations:
+                winner = token
         return winner
 
     def __str__(self):
@@ -72,29 +69,47 @@ class DictTTTBoard:
         O| |O
          | |O
         """
-        row_1 = [' ', ' ', ' ']
-        row_2 = [' ', ' ', ' ']
-        row_3 = [' ', ' ', ' ']
+        print_list = [' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']
         i = 0
-        for item in self._tokens_to_coords:
-            for key, value in self._tokens_to_coords[i].items():
-                for coord in value:
-                    x = coord[0]
-                    y = coord[1]
-                    if y == 0:
-                        row_1[x] = key
-                    if y == 1:
-                        row_2[x] = key
-                    if y == 2:
-                        row_3[x] = key
-            i += 1
-        row_1 = '|'.join(row_1)
-        row_2 = '|'.join(row_2)
-        row_3 = '|'.join(row_3)
-        return str(row_1 + '\n' + row_2 + '\n' + row_3)
+        for token in self._tokens_to_coords:
+                for key, value in self._tokens_to_coords[i].items():
+                    for coord in value:
+                        x = coord[0]
+                        y = coord[1]
+                        print_list[y][x] = key
+                i += 1
+        joined_rows = ['|'.join(row) for row in print_list]
+        return '\n'.join(joined_rows)
 
     def _append_to_tokens_to_coords(self, key, coords):
         group = key
         if group not in self._tokens_to_coords:
             self._tokens_to_coords[group] = []
         self._tokens_to_coords[group].append(coords)
+
+
+def _get_winning_combinations():
+    winning_combinations = []
+    for i in range(8):
+        winning_combinations.append([])
+    x = 0
+    for i in range(3):
+        for y in range(3):
+            winning_combinations[i].append((x, y))
+        x += 1
+    y = 0
+    for i in range(3, 6):
+        for x in range(3):
+            winning_combinations[i].append((x, y))
+        y += 1
+    for i in range(6, 7):
+        for x in range(3):
+            winning_combinations[i].append((x, x))
+    x = 3
+    y = 0
+    for i in range(7, 8):
+        for x in reversed(range(x)):
+            winning_combinations[i].append((x, y))
+            y += 1
+    return winning_combinations
+

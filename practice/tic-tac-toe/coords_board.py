@@ -4,7 +4,6 @@ winner of a game, and returning a str version of the board, using tuples data ty
 from operator import itemgetter
 
 
-
 class CoordsTTTBoard:
     """Contains a blank TTT board as list of tuples items, and commands to modify the board, score game, and return str
     version of board.
@@ -55,20 +54,14 @@ class CoordsTTTBoard:
         >>> X.calc_winner() is None
         True
         """
-        coords_to_token = {}
         key = itemgetter(0)
         winning_combinations = _get_winning_combinations()
         winner = None
-        for token in self._list_of_tokens:
-            item = (token[2], (token[0], token[1]))
-            coords = (token[0], token[1])
-            group = key(item)
-            if group not in coords_to_token:
-                coords_to_token[group] = []
-            coords_to_token[group].append(coords)
-        for item in coords_to_token:
-            if sorted(coords_to_token[item]) in winning_combinations:
-                winner = item
+        tokens_to_coords = [(token[2], (token[0], token[1])) for token in self._list_of_tokens]
+        coords_to_token = _group_by(tokens_to_coords, key)
+        for token in coords_to_token:
+            if sorted(coords_to_token[token]) in winning_combinations:
+                winner = token
         return winner
 
     def __str__(self):
@@ -83,39 +76,47 @@ class CoordsTTTBoard:
         X|O|O
         """
         print_list = [' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']
-        for item in self._list_of_tokens:
-            x = item[0]
-            y = item[1]
-            print_list[y][x] = item[2]
+        for token in self._list_of_tokens:
+            x = token[0]
+            y = token[1]
+            print_list[y][x] = token[2]
         joined_rows = ['|'.join(row) for row in print_list]
         return '\n'.join(joined_rows)
 
 
 def _get_winning_combinations():
     winning_combinations = []
-    x = 0
-    for item in range(3):
+    for i in range(8):
         winning_combinations.append([])
+    x = 0
+    for i in range(3):
         for y in range(3):
-            winning_combinations[item].append((x, y))
+            winning_combinations[i].append((x, y))
         x += 1
     y = 0
-    for item in range(3, 6):
-        winning_combinations.append([])
+    for i in range(3, 6):
         for x in range(3):
-            winning_combinations[item].append((x, y))
+            winning_combinations[i].append((x, y))
         y += 1
-    for item in range(6, 7):
-        winning_combinations.append([])
+    for i in range(6, 7):
         for x in range(3):
-            winning_combinations[item].append((x, x))
-    # needs last combination
+            winning_combinations[i].append((x, x))
+    x = 3
+    y = 0
+    for i in range(7, 8):
+        for x in reversed(range(x)):
+            winning_combinations[i].append((x, y))
+            y += 1
     return winning_combinations
 
-    WINNING_COMBINATIONS = [[(0, 0), (1, 0), (2, 0)], [(0, 0), (0, 1), (0, 2)], [(1, 0), (1, 1), (1, 2)],
-                            [(0, 1), (1, 1),
-                             (1, 2)],
-                            [(2, 0), (2, 1), (2, 2)], [(0, 2), (1, 2), (2, 2)], [(0, 0), (1, 1), (2, 2)],
-                            [(2, 0), (1, 1),
-                             (0, 2)]]
 
+def _group_by(iterable, key):
+    """Place each item in an iterable into a bucket based on calling the key
+    function on the item."""
+    group_to_items = {}
+    for item in iterable:
+        group = key(item)
+        if group not in group_to_items:
+            group_to_items[group] = []
+        group_to_items[group].append(item[1])
+    return group_to_items
