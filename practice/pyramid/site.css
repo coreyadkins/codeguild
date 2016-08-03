@@ -1,0 +1,22 @@
+.row {
+  box-sizing: border-box;
+  height: 100px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.inner {
+  box-sizing: border-box;
+  height: 100px;
+  padding: 10px;
+  flex: 1;
+}
+
+.long {
+  flex: 4;
+}
+
+.inner.threecolumns {
+  flex: 0 0 90px;
+}
