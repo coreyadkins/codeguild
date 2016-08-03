@@ -1,14 +1,23 @@
 body {
-  background: lawngreen;
   color: magenta;
+}
+
+div:after {
+  background-image: url("johncena.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.25;
 }
 
 .link {
   color: red;
 }
 
-blockquote {
-  font: Comic;
+.quote {
+  color: yellow;
+  font-family: "Comic Sans MS", sans-serif;
+  font-size: 30px;
 }
 
 img {
