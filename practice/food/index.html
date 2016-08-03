@@ -6,6 +6,7 @@
   </head>
   <body>
     <form>
+      <h1>Whatchu eatin?</h1>
       <div>
         <label><input type="text" name="dinner description"> What did you eat for dinner last night?</label>
       </div>
@@ -19,9 +20,10 @@
       <div>
         <h2>Were you a vegetarian?</h2>
         <label><input type="radio" name="vegetarian" value="yes" />Yes</label>
-        <label></label><input type="radio" name="vegetarian" value="no" />No</label>
+        <label><input type="radio" name="vegetarian" value="no" />No</label>
       </div>
       <div>
+        <h2>Favorite ice cream flavor?</h2>
         <select name="ice cream flavor">
           <option value="Chocolate">Chocolate</option>
           <option value="Strawberry">Strawberry</option>
@@ -31,7 +33,17 @@
       </div>
       <div>
         <h2>Tell me about your most memorable dinner ever.</h2>
-        <label><input type="text" name="memorable dinner" placeholder="Tell me a deliiiicious story." /></label>
+        <label><textarea name="memorable dinner" placeholder="Tell me a deliiiicious story."></textarea></label>
+      </div>
+      <div>
+        <input type="submit" value= "I'm hungry.">
+      </div>
+      <div>
+        <input type="submit" value= "Submit" />
+      </div>
+      <div>
+        <h2>Show us your favorite Chopsticks</h2>
+        <input type="file" name="file" />
       </div>
     </form>
   </body>
