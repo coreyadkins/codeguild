@@ -1,13 +1,9 @@
 body {
-  color: magenta;
-}
-
-div:after {
   background-image: url("johncena.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  opacity: 0.25;
+  color: magenta;
 }
 
 .link {
