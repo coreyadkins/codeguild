@@ -82,6 +82,7 @@ class DictTTTBoard:
         return '\n'.join(joined_rows)
 
     def _append_to_tokens_to_coords(self, key, coords):
+        """Uses a group_by function to append a token to a dictionary of tokens and coordinates."""
         group = key
         if group not in self._tokens_to_coords:
             self._tokens_to_coords[group] = []
@@ -89,27 +90,9 @@ class DictTTTBoard:
 
 
 def _get_winning_combinations():
-    winning_combinations = []
-    for i in range(8):
-        winning_combinations.append([])
-    x = 0
-    for i in range(3):
-        for y in range(3):
-            winning_combinations[i].append((x, y))
-        x += 1
-    y = 0
-    for i in range(3, 6):
-        for x in range(3):
-            winning_combinations[i].append((x, y))
-        y += 1
-    for i in range(6, 7):
-        for x in range(3):
-            winning_combinations[i].append((x, x))
-    x = 3
-    y = 0
-    for i in range(7, 8):
-        for x in reversed(range(x)):
-            winning_combinations[i].append((x, y))
-            y += 1
-    return winning_combinations
+    """Generates all of the possible winning combinations in a tic tac toe board."""
+    winning_col_combinations = [[(x, y) for y in range(3)] for x in range(3)]
+    winning_row_combinations = [[(x, y) for x in range(3)] for y in range(3)]
+    winning_diag_combinations = [(i, i) for i in range(3)] + [(3 - i, i) for i in range(3)]
+    return winning_col_combinations + winning_row_combinations + winning_diag_combinations
 
