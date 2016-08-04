@@ -1,9 +1,31 @@
+html {
+  display: flex;
+}
+
 body {
   background-image: url("johncena.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   color: magenta;
+  width: 90%;
+  flex: 1;
+}
+
+p {
+  padding: 5px;
+  margin: 10px;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+header {
+  display: flex;
+  justify-content: center;
 }
 
 .link {
@@ -20,8 +42,8 @@ img {
   border-radius: 20px;
   background: black;
   padding: 10px;
-  width: 202px;
-  height: 249px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 ul {
@@ -34,4 +56,9 @@ ul {
 li:before {
   content: "☞";
   padding-right: 5 px;
+}
+
+.leftalign {
+  justify-content: flex-start;
+  margin-left: 10px;
 }
