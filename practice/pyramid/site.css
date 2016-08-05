@@ -1,22 +1,33 @@
+div {
+  border: 1px solid black;
+}
+
 .row {
-  box-sizing: border-box;
-  height: 100px;
-  padding: 20px;
+  margin: 20px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-.inner {
+.row > div {
   box-sizing: border-box;
-  height: 100px;
-  padding: 10px;
-  flex: 1;
+  height: 78px;
+  margin: 10px;
 }
 
-.long {
+#full {
+  flex: 1
+}
+
+#long {
   flex: 4;
+  margin-right: 5px;
 }
 
-.inner.threecolumns {
-  flex: 0 0 90px;
+#short {
+  flex: 1;
+  margin-left: 5px;
+}
+
+.threecolumns {
+  width: 90px;
 }
