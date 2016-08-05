@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Whatchu Eatin?</title>
+  </head>
+  <body>
+    <form>
+      <h1>Whatchu eatin?</h1>
+      <div>
+        <label><input type="text" name="dinner description"> What did you eat for dinner last night?</label>
+      </div>
+      <div>
+        <h2>What food groups did you have?</h2>
+        <label><input type="checkbox" name="foodgroups" value="meat" /> Meat</label>
+        <label><input type="checkbox" name="foodgroups" value="potatoes" />potatoes</label>
+        <label><input type="checkbox" name="foodgroups" value="broccoli" />broccoli</label>
+        <label><input type="checkbox" name="foodgroups" value="cheese" />cheese</label>
+      </div>
+      <div>
+        <h2>Were you a vegetarian?</h2>
+        <label><input type="radio" name="vegetarian" value="yes" />Yes</label>
+        <label><input type="radio" name="vegetarian" value="no" />No</label>
+      </div>
+      <div>
+        <h2>Favorite ice cream flavor?</h2>
+        <select name="ice cream flavor">
+          <option value="Chocolate">Chocolate</option>
+          <option value="Strawberry">Strawberry</option>
+          <option value="Cookie Dough">Cookie Dough</option>
+          <option value="Raspberry">Raspberry</option>
+        </select>
+      </div>
+      <div>
+        <h2>Tell me about your most memorable dinner ever.</h2>
+        <label><textarea name="memorable dinner" placeholder="Tell me a deliiiicious story."></textarea></label>
+      </div>
+      <div>
+        <h2>Show us your favorite Chopsticks</h2>
+        <input type="file" name="file" />
+      </div>
+      <div>
+        <input type="submit" value="I'm hungry.">
+      </div>
+      <div>
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+  </body>
+</html>
