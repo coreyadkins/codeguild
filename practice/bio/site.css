@@ -1,0 +1,38 @@
+body {
+  background-image: url("johncena.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color: magenta;
+}
+
+a {
+  color: red;
+}
+
+blockquote {
+  color: yellow;
+  font-family: "Comic Sans MS", sans-serif;
+  font-size: 30px;
+  font-style: italic;
+}
+
+img {
+  border-radius: 20px;
+  background: black;
+  padding: 10px;
+  width: 202px;
+  height: 249px;
+}
+
+ul {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 1em;
+    text-indent: -1em;
+}
+
+li:before {
+  content: "☞";
+  padding-right: 5 px;
+}
