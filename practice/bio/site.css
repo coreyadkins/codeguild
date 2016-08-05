@@ -6,14 +6,15 @@ body {
   color: magenta;
 }
 
-.link {
+a {
   color: red;
 }
 
-.quote {
+blockquote {
   color: yellow;
   font-family: "Comic Sans MS", sans-serif;
   font-size: 30px;
+  font-style: italic;
 }
 
 img {
