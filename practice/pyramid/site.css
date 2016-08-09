@@ -1,0 +1,33 @@
+div {
+  border: 1px solid black;
+}
+
+.row {
+  margin: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.row > div {
+  box-sizing: border-box;
+  height: 78px;
+  margin: 10px;
+}
+
+#full {
+  flex: 1
+}
+
+#long {
+  flex: 4;
+  margin-right: 5px;
+}
+
+#short {
+  flex: 1;
+  margin-left: 5px;
+}
+
+.threecolumns {
+  width: 90px;
+}
