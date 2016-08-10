@@ -1,0 +1,39 @@
+html {
+    /*Let's have the body be layed out using flexbox.*/
+    display: flex;
+    /*Center the single flexbox inner item.*/
+    justify-content: center;
+}
+
+body {
+    /*Have the entire body be 75% of the full page width.*/
+    width: 75%;
+}
+
+div.flex {
+    /*Have this main container div use flexboxes to layout columns.*/
+    display: flex;
+}
+
+nav {
+    /*Say that the nav should take up at most 100 pixels. Use max-width so if it should be smaller, it will reduce in size.*/
+    max-width: 100px;
+}
+
+
+
+img.corner {
+    float: left;
+}
+
+footer {
+    color: grey;
+}
+
+img {
+  width: cover;
+}
+
+p {
+  flex: 1;
+}
