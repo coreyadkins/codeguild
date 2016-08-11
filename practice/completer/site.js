@@ -21,9 +21,7 @@ var completerPrototype = {
    * Removes a word from the completion list.
    */
   removeCompletion: function(str) {
-    _.remove(this.completions, function(item) {
-        return item === str;
-    });
+    _.pull(this.completions, str);
   },
   /**
    * Inputs the beginning of a word and outputs a list of suggested words that
