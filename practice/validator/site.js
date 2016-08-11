@@ -24,12 +24,9 @@ function getUserPhone() {
 // No transform.
 
 // 3. Create
-/**
- * Generates the regex to test 'name' against.
- */
-function getNameMatch() {
-  return /\w+\s\w+/;
-}
+var NAME_MATCH = /\w+\s\w+/;
+var DOB_MATCH = /\d\d\d\d-\d\d-\d\d/;
+var PHONE_MATCH = /\d\d\d-\d\d\d-\d\d\d\d/;
 /**
  * Selects the 'name' input box.
  */
@@ -37,22 +34,10 @@ function getNameBox() {
   return $('#name');
 }
 /**
- * Generates the regex to test 'dob' against.
- */
-function getDOBMatch() {
-  return /\d\d\d\d-\d\d-\d\d/;
-}
-/**
  * Selects the 'dob' input box.
  */
 function getDOBBox() {
   return $('#dob');
-}
-/**
- * Generates the regex to test 'phone' against.
- */
-function getPhoneMatch() {
-  return /\d\d\d-\d\d\d-\d\d\d\d/;
 }
 /**
  * Selects the 'phone' input box.
@@ -95,27 +80,24 @@ function validate(match, box, input) {
  */
 function validateName() {
   var inputName = getUserName();
-  var match = getNameMatch();
   var box = getNameBox();
-  validate(match, box, inputName);
+  validate(NAME_MATCH, box, inputName);
 }
 /**
  * Pipes variables to test the 'dob' input box for validity.
  */
 function validateDOB() {
   var inputDOB = getUserDOB();
-  var match = getDOBMatch();
   var box = getDOBBox();
-  validate(match, box, inputDOB);
+  validate(DOB_MATCH, box, inputDOB);
 }
 /**
  * Pipes variables to test the 'phone' input box for validity.
  */
 function validatePhone() {
   var inputPhone = getUserPhone();
-  var match = getPhoneMatch();
   var box = getPhoneBox();
-  validate(match, box, inputPhone);
+  validate(PHONE_MATCH, box, inputPhone);
 }
 
 // 6. Register Functions
@@ -124,15 +106,9 @@ function validatePhone() {
  * check validity of input.
  */
 function registerInitialEventHandlers() {
-  $('#name').on('input', function() {
-    validateName();
-  });
-  $('#dob').on('input', function() {
-    validateDOB();
-  });
-  $('#phone').on('input', function() {
-    validatePhone();
-  });
+  $('#name').on('input', validateName);
+  $('#dob').on('input', validateDOB);
+  $('#phone').on('input', validatePhone);
   $('form').on('submit', function(event) {
     event.preventDefault();
   });
