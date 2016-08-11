@@ -133,5 +133,8 @@ function registerInitialEventHandlers() {
   $('#phone').on('input', function() {
     validatePhone();
   });
+  $('form').on('submit', function(event) {
+    event.preventDefault();
+  });
 }
 $(document).ready(registerInitialEventHandlers);
