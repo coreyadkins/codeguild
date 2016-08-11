@@ -30,8 +30,7 @@ var completerPrototype = {
    * match the inputted stem.
    */
   complete: function(prefix) {
-    var completionsArray = [];
-    completionsArray.push(_.filter(this.completions, function(comp) {
+    var completionsArray = _.filter(this.completions, function(comp) {
       return _.startsWith(comp, prefix);
     }));
     return completionsArray;
