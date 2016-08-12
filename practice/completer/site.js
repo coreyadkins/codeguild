@@ -11,11 +11,8 @@ var completerPrototype = {
    * Adds a word to the completion list to be stored as a suggestion.
    */
   addCompletion: function(comp) {
-    if (_.includes(this.completions, comp)) {
-      null; //Is this the best way to tell JS to do nothing?
-    } else {
+    if (!_.includes(this.completions, comp)) {
       this.completions.push(comp);
-    }
   },
   /**
    * Removes a word from the completion list.
