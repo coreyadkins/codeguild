@@ -24,9 +24,9 @@ function getUserPhone() {
 // No transform.
 
 // 3. Create
-var NAME_MATCH = /\w+\s\w+/;
-var DOB_MATCH = /\d\d\d\d-\d\d-\d\d/;
-var PHONE_MATCH = /\d\d\d-\d\d\d-\d\d\d\d/;
+var NAME_MATCH = /^([a-z]+\s[a-z]+)?$/i;
+var DOB_MATCH = /^(\d{4}-\d{2}-\d{2})?$/;
+var PHONE_MATCH = /^(\d{3}-\d{3}-\d{4})?$/;
 /**
  * Selects the 'name' input box.
  */
@@ -48,10 +48,16 @@ function getPhoneBox() {
 
 // 4. Modify and Sync
 /**
- * Toggles the invalid class on or off to mark whether the input text is invalid.
+ * Turns on the invalid class to mark that the input text is invalid.
  */
-function toggleInvalid(box) {
-  box.toggleClass('invalid');
+function addInvalid(box) {
+  box.attr('class', 'invalid');
+}
+/**
+ * Turns off the invalid class to mark that the input text is valid.
+ */
+function removeInvalid(box) {
+  box.removeClass('invalid');
 }
 /**
  * Checks the input against the correct match. If they do not match and the box
@@ -59,18 +65,14 @@ function toggleInvalid(box) {
  */
 function validate(match, box, input) {
   var doesMatch = match.test(input);
-  var alreadyInvalid = box.hasClass('invalid');
   /**
    * Ensures that an empty form will not be marked as invalid.
    */
-  if (input === '') {
-    doesMatch = true;
+  if (doesMatch === false) {
+    addInvalid(box);
   }
-  if (doesMatch === false && alreadyInvalid === false) {
-    toggleInvalid(box);
-  }
-  if (doesMatch === true && alreadyInvalid === true) {
-    toggleInvalid(box);
+  if (doesMatch === true) {
+    removeInvalid(box);
   }
 }
 
