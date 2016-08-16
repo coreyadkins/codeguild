@@ -51,7 +51,7 @@ function getPhoneBox() {
  * Turns on the invalid class to mark that the input text is invalid.
  */
 function addInvalid(box) {
-  box.attr('class', 'invalid');
+  box.addClass('invalid');
 }
 /**
  * Turns off the invalid class to mark that the input text is valid.
@@ -65,13 +65,9 @@ function removeInvalid(box) {
  */
 function validate(match, box, input) {
   var doesMatch = match.test(input);
-  /**
-   * Ensures that an empty form will not be marked as invalid.
-   */
-  if (doesMatch === false) {
+  if (doesMatch) {
     addInvalid(box);
-  }
-  if (doesMatch === true) {
+  } else {
     removeInvalid(box);
   }
 }
