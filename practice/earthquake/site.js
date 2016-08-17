@@ -15,6 +15,9 @@ if (!window.ol) {
   var ol = {};
 }
 
+var ACCESS_TIME_UTC = new Date().getTime();
+
+
 /**
  * Inputs new Earthquake Data from usgs.gov.
  */
@@ -73,9 +76,9 @@ function createMap() {
  * @return {number}      Opacity of object based on how recently it ocurred,
  * with 1 meaning it occurred the moment of access.
  */
-function calculateOpacity(time, accessTimeUTC) {
+function calculateOpacity(time) {
   var weekUTC = 604800000;
-  var timeBeforeAccess = (time - accessTimeUTC) * -1;
+  var timeBeforeAccess = (time - ACCESS_TIME_UTC) * -1;
   return timeBeforeAccess / weekUTC;
 }
 
@@ -115,10 +118,8 @@ function getPlotPoints(eqCoordsMagsAndTimes) {
  * @param {array} plotPoints    Array of objects containing each individual
  * .Feature object which correspond to each earthquake in data.
  * @param {object} map           Instanced ol.Map object.
- * @param {number} accessTimeUTC Instanced time of access in UTC for time
- * calculations.
  */
-function addPointsToMap(plotPoints, map, accessTimeUTC) {
+function addPointsToMap(plotPoints, map) {
   var vectorSource = new ol.source.Vector({});
   for (var i = 0; i < plotPoints.length; i += 1) {
     vectorSource.addFeature(plotPoints[i]);
@@ -128,7 +129,7 @@ function addPointsToMap(plotPoints, map, accessTimeUTC) {
     style: function(feature) {
       return new ol.style.Style({
         image: new ol.style.Icon({
-          opacity: calculateOpacity(feature.get('time', accessTimeUTC)),
+          opacity: calculateOpacity(feature.get('time')),
           scale: calculateScale(feature.get('magnitude')),
           size: [250, 250],
           src: '../earthquake/earthquake.png'
@@ -145,13 +146,11 @@ function addPointsToMap(plotPoints, map, accessTimeUTC) {
  * @param  {JSON object} earthquakeData geoJSON object which contains all
  * earthquake data from the past week.
  * @param  {[type]} map            Instanced ol.Map object.
- * @param  {[type]} accessTimeUTC  Instanced time of access in UTC for time
- * calculations.
  */
-function plotEarthquakePoints(earthquakeData, map, accessTimeUTC) {
+function plotEarthquakePoints(earthquakeData, map) {
   var eqCoordsMagsAndTimes = getEqCoordsMagsAndTimes(earthquakeData);
   var plotPoints = getPlotPoints(eqCoordsMagsAndTimes);
-  addPointsToMap(plotPoints, map, accessTimeUTC);
+  addPointsToMap(plotPoints, map);
 }
 
 /**
@@ -162,8 +161,7 @@ function initiateEventHandlers() {
   var map = createMap();
   getEarthquakeData().
     then(function(earthquakeData) {
-      var accessTimeUTC = new Date().getTime();
-      plotEarthquakePoints(earthquakeData, map, accessTimeUTC);
+      plotEarthquakePoints(earthquakeData, map);
     });
 }
 
