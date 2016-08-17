@@ -30,27 +30,9 @@ function getEarthquakeData() {
 }
 
 /**
- * Data Transformation- Pulls magnitude, longitude, latitude, and time of each
- * earthquake into an array and maps them together into an array of arrays.
- * @param  {JSON object} earthquakeData: geoJSON object containing all
- * earthquakeData for the previous week.
- * @return {Array}                array of arrays containing magnitude,
- *                                 coordinates, and time of each earthquake.
- */
-function getEqCoordsMagsAndTimes(earthquakeData) {
-  var features = earthquakeData.features;
-  return _.map(features, function(feature) {
-    var magnitude = feature.properties.mag;
-    var longitude = feature.geometry.coordinates[0];
-    var latitude = feature.geometry.coordinates[1];
-    var time = feature.properties.time;
-    return [magnitude, longitude, latitude, time];
-  });
-}
-/**
  * Creates the OpenLayers map which the Earthquake tokens will be placed onto.
- * @return {Object} Instanced 'map' OpenLayers object which represents the map
- * background on which earthquake tokens will be placed.
+ * @return {Object} Instanced VectorSource OpenLayers object which will contain
+ * plot points to be added.
  */
 function createMap() {
   var map = new ol.Map({
@@ -96,18 +78,20 @@ function calculateScale(magnitude) {
 }
 
 /**
- * Takes in transformed earthquake data and creates a .Feature OpenLayers
+ * Takes in earthquake data and creates a .Feature OpenLayers
  * object which contains the coordinates of the earthquake, its time, and its
  * magnitude.
- * @param  {array} eqCoordsMagsAndTimes Array of arrays containing earthquake data.
+ * @param  {array} earthquakeData    Array of objects containing earthquake data.
  * @return {Object}                  OpenLayers.Feature object containing data.
  */
-function getPlotPoints(eqCoordsMagsAndTimes) {
-  return _.map(eqCoordsMagsAndTimes, function(eqCoordMagAndTime) {
+function getPlotPoints(earthquakeData) {
+  var features = earthquakeData.features;
+  return _.map(features, function(feature) {
     return new ol.Feature({
-      geometry: new ol.geom.Point([eqCoordMagAndTime[1],eqCoordMagAndTime[2]]),
-      magnitude: eqCoordMagAndTime[0],
-      time: eqCoordMagAndTime[3]
+      geometry: new ol.geom.Point(feature.geometry.coordinates[0],
+        feature.geometry.coordinates[1]),
+      magnitude: feature.properties.mag,
+      time: feature.properties.time
     });
   });
 }
@@ -119,8 +103,7 @@ function getPlotPoints(eqCoordsMagsAndTimes) {
  * .Feature object which correspond to each earthquake in data.
  * @param {object} map           Instanced ol.Map object.
  */
-function addPointsToMap(plotPoints, map) {
-  var vectorSource = new ol.source.Vector({});
+function addPointsToMap(plotPoints, vectorSource) {
   for (var i = 0; i < plotPoints.length; i += 1) {
     vectorSource.addFeature(plotPoints[i]);
   }
@@ -137,7 +120,6 @@ function addPointsToMap(plotPoints, map) {
       });
     }
   });
-  map.addLayer(newLayer);
 }
 
 /**
@@ -147,10 +129,10 @@ function addPointsToMap(plotPoints, map) {
  * earthquake data from the past week.
  * @param  {[type]} map            Instanced ol.Map object.
  */
-function plotEarthquakePoints(earthquakeData, map) {
-  var eqCoordsMagsAndTimes = getEqCoordsMagsAndTimes(earthquakeData);
-  var plotPoints = getPlotPoints(eqCoordsMagsAndTimes);
-  addPointsToMap(plotPoints, map);
+function plotEarthquakePoints(earthquakeData, vectorSource, map) {
+  var plotPoints = getPlotPoints(earthquakeData);
+  var newLayer = addPointsToMap(plotPoints, vectorSource);
+  map.addLayer(newLayer);
 }
 
 /**
@@ -161,7 +143,8 @@ function initiateEventHandlers() {
   var map = createMap();
   getEarthquakeData().
     then(function(earthquakeData) {
-      plotEarthquakePoints(earthquakeData, map);
+      var vectorSource = new ol.source.Vector({});
+      plotEarthquakePoints(earthquakeData, vectorSource, map);
     });
 }
 
