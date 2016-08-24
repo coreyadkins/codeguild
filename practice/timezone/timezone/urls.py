@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^time/', views.get_server_time, name='get_server_time'),
+    url(r'^(?P<in_lat>.+),(?P<in_lng>.+),(?P<in_time>.+)/as/(?P<out_lat>.+),(?P<out_lng>.+)',
+        views.convert_time_from_lat_lngs, name='convert_time_from_lat_lngs'),
+    url(r'^(?P<lat>.+),(?P<lng>.+)/time', views.get_time_at_lat_lng, name='get_time_at_lat_lng'),
+    url(r'^(?P<lat>.+),(?P<lng>.+)', views.get_timezone_at_lat_lng, name='get_timezone_at_lat_lng')
 ]
