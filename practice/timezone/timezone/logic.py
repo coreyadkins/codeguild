@@ -14,9 +14,17 @@ def get_timezone(lat, lng):
 
     >>> get_timezone(43.068888, -121.008911)
     'America/Los_Angeles'
+    >>> get_timezone(1, 1)
+    Traceback (most recent call last):
+        ...
+    ValueError: Invalid coordinates
     """
     tz = tzwhere.tzwhere()
-    return tz.tzNameAt(lat, lng)
+    timezone = tz.tzNameAt(lat, lng)
+    if timezone is None:
+        raise ValueError('Invalid coordinates')
+    else:
+        return timezone
 
 
 def get_time_at_timezone(timezone):
