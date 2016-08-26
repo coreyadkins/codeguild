@@ -16,11 +16,14 @@ COUNTRY_CODE_TO_COUNTRY = {
     }
 
 COUNTRY_CODE_TO_INDUSTRY = {
-    countrycode: sorted(list(set([person['industry'].title()
-                           for person in people
-                           if person['countryCode'] == countrycode])))
-                      for countrycode in COUNTRY_CODE_TO_COUNTRY
-    }
+    countrycode: sorted(list(set([
+        person['industry'].title()
+        for person in people
+        if person['countryCode'] == countrycode
+    ])))
+    for countrycode
+    in COUNTRY_CODE_TO_COUNTRY
+}
 
 
 
