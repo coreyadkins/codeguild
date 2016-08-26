@@ -23,8 +23,8 @@ def get_timezone_at_lat_lng(request, lat, lng):
     try:
         timezone = logic.get_timezone(float(lat), float(lng))
         return HttpResponse(timezone)
-    except ValueError:
-        return HttpResponse('Not valid', status=404)
+    except ValueError as exception:
+        return HttpResponse(str(exception), status=404)
 
 def get_time_at_lat_lng(request, lat, lng):
     """Retrives the current time at inputted longitude and latitude coordinates.
@@ -37,8 +37,8 @@ def get_time_at_lat_lng(request, lat, lng):
         timezone = logic.get_timezone(float(lat), float(lng))
         time_at_timezone = logic.get_time_at_timezone(timezone)
         return HttpResponse(time_at_timezone)
-    except ValueError:
-        return HttpResponse('Not valid', status=400)
+    except ValueError as exception:
+        return HttpResponse(str(exception), status=400)
 
 def convert_time_from_lat_lngs(request, in_time, out_lat, out_lng):
     """Converts inputted time into concurrent time at output longitude and latitude coordinates.
@@ -54,5 +54,5 @@ def convert_time_from_lat_lngs(request, in_time, out_lat, out_lng):
         timezone_out = logic.get_timezone(float(out_lat), float(out_lng))
         converted_time = logic.convert_to_timezone(in_time, timezone_out)
         return HttpResponse(converted_time)
-    except ValueError:
-        return HttpResponse('Not valid', status=400)
+    except ValueError as exception:
+        return HttpResponse(str(exception), status=400)

@@ -42,6 +42,14 @@ def convert_to_timezone(time_in, timezone_out):
 
     >>> convert_to_timezone('2013-05-09T03:59:59.999999-04:00', 'America/Los_Angeles')
     <Arrow [2013-05-09T00:59:59.999999-07:00]>
+    >>> convert_to_timezone('Bob', 'America/Los_Angeles')
+    Traceback (most recent call last):
+        ...
+    ValueError: Invalid time
     """
-    time_in = arrow.get(time_in)
-    return time_in.to(timezone_out)
+    try:
+        time_in = arrow.get(time_in)
+        return time_in.to(timezone_out)
+    except arrow.parser.ParserError:
+        raise ValueError('Invalid time')
+
