@@ -8,7 +8,8 @@
     <ul>
       {%for industry in industries %}
       <li>
-        <a href="/countries/{{code}}">{{industry}}</a>
+        <!--<a href="/country/{{code}}/industry/{{industry}}">{{industry}}</a>-->
+        <a href="{% url 'people_in_industry' code industry %}">{{industry}}</a>
       </li>
       {%endfor%}
     </ul>

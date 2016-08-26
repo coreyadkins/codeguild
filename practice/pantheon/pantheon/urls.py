@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.get_countries_and_country_ids, name='countries'),
     url(r'^country/(?P<country_code>.+)/industry/(?P<industry>.+)/*', views.get_people_in_industry, name='people_in_industry'),
-    url(r'^country/(?P<country_code>.+)$', views.get_industries_and_cur_ids, name='industries'),
+    url(r'^country/(?P<country_code>.+)$', views.get_country_code_to_industry, name='industries'),
+    url(r'^persons/(?P<cur_id>.+)$', views.get_person_from_cur_id, name='people'),
 ]
