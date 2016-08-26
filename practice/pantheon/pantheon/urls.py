@@ -19,5 +19,7 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.get_countries, name='countries')
+    url(r'^$', views.get_countries_and_country_ids, name='countries'),
+    url(r'^country/(?P<country_code>.+)/industry/(?P<industry>.+)/*', views.get_people_in_industry, name='people_in_industry'),
+    url(r'^country/(?P<country_code>.+)$', views.get_industries_and_cur_ids, name='industries'),
 ]
