@@ -18,7 +18,7 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.render_index, name='index'),
-    url(r'poll_form/ack^$', views.render_forms_ack, name='form_ack'),
-    url(r'poll_form^$', views.render_form, name='poll_form'),
+    url(r'^$', views.render_summary, name='index'),
+    url(r'^poll_form/ack$', views.render_forms_ack, name='form_ack'),
+    url(r'^poll_form$', views.render_form, name='poll_form'),
 ]
