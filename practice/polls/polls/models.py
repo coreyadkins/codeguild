@@ -1,26 +1,9 @@
 """polls Models."""
 
-class Poll:
-    def __init__(self, flavors):
-        self.votes = {flavor: 0 for flavor in flavors}
 
-    def __repr__(self):
-        return 'Polls({!r})'.format(
-            self.flavors
-        )
+POLL = {'chocolate': 0, 'strawberry': 0, 'vanilla': 0}
 
-    def __eq__(self, other):
-        return (
-            self.flavors == other.flavors
-        )
-    def update_poll(self, vote):
-            self.votes[vote] += 1
-
-
-def update_poll(vote):
-    POLL.update_poll(vote)
-
-
-POLL = Poll(['chocolate', 'strawberry', 'vanilla'])
+def add_vote_to_poll(vote):
+    POLL[vote] += 1
 
 

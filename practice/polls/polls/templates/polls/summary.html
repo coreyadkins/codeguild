@@ -6,7 +6,7 @@
   </head>
   <body>
     <ul>
-      {% for flavor in flavors %}
+      {% for flavor in results_by_flavor %}
       <li>
         {{flavor.flavor_name}}: {{flavor.percent|floatformat}}
       </li>
