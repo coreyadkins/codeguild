@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Jokes - Index</title>
+  </head>
+  <body>
+    {% for joke in jokes %}
+    <section>
+      <div class="setup">
+        {{joke.setup}}
+      </div>
+      <div class="punchline">
+        {{joke.punchline}}
+      </div>
+    </section>
+    {% endfor %}
+  </body>
+  <script src="https://code.jquery.com/jquery-2.2.3.js"></script>
+  <script src="{% url static 'jokes/index.js' %}"></script>
+</html>
