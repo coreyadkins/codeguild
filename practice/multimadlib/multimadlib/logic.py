@@ -1,0 +1,1 @@
+"""multimadlib Logic."""

@@ -5,10 +5,11 @@
     <title>Multimadlib - Madlib completions form</title>
   </head>
   <body>
-    <form action="{% url 'madlib_display' %}" method="get"></form>
-    {% for variable in variables %}
-    <label>{{variable}}<input type="text" name="{{variable}}"></label>
-    {% endfor %}
+    <form action="{% url 'madlib_display' madlib_name %}" method="get">
+      {% for variable in variables %}
+      <label>{{variable}}<input type="text" name="{{variable}}"></label>
+      {% endfor %}
     <input type="submit">
+    </form>
   </body>
 </html>
