@@ -9,8 +9,8 @@
     <h1>Give me a joke!</h1>
     <form action="{% url 'submit_ack' %}"method="post">
       {% csrf_token %}
-      <label>Setup<input type="textarea" name="setup"/></label>
-      <label>Punchline<input type="textarea" name="punchline"/></label>
+      <label>Setup<textarea name="setup"></textarea></label>
+      <label>Punchline<textarea name="punchline"></textarea></label>
       <input type="submit" name="submit" />
     </form>
   </body>
