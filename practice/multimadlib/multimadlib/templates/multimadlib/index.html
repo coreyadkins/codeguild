@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Multimadlib- Index</title>
+  </head>
+  <body>
+    <a href="{% url 'new_madlib' %}">Make a new madlib.</a>
+    {% for madlib in madlibs %}
+    {% url 'madlib_form' madib.name as madlib_url %}
+    <a href="{{madlib_url}}">Fill out {{madlib.name}}</a>
+    {% endfor %}
+  </body>
+</html>

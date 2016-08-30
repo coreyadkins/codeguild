@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Multimadlib - New madlib form</title>
+  </head>
+  <body>
+    <form action="{% url 'new_madlib_ack' %}" method="post">
+      {% csrf_token %}
+      <label>Madlib Name:<input type="text" name="name"></label>
+      <label>Madlib Template:<textarea name="template"></textarea></label>
+        <input type="submit">
+    </form>
+  </body>
+</html>

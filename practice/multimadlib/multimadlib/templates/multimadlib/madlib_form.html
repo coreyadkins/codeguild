@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Multimadlib - Madlib completions form</title>
+  </head>
+  <body>
+    <form action="{% url 'madlib_display' %}" method="get"></form>
+    {% for variable in variables %}
+    <label>{{variable}}<input type="text" name="{{variable}}"></label>
+    {% endfor %}
+    <input type="submit">
+  </body>
+</html>
