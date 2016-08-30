@@ -9,14 +9,15 @@
     {% for joke in jokes %}
     <section>
       <div class="setup">
-        {{joke.setup}}
+      {{joke.setup}}
       </div>
       <div class="punchline">
-        {{joke.punchline}}
+      {{joke.punchline}}
       </div>
     </section>
     {% endfor %}
+  <a href="{% url 'form' %}">Tell me a funny joke</a>
   </body>
   <script src="https://code.jquery.com/jquery-2.2.3.js"></script>
-  <script src="{% url static 'jokes/index.js' %}"></script>
+  <script src="{% static 'jokes/index.js' %}"></script>
 </html>
