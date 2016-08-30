@@ -20,8 +20,7 @@ function revealPunchline(punchline) {
 function initializeEventHandlers() {
   hidePunchlines();
   $('section').on('click', function(event){
-    var target = $(event.target).parent();
-    var punchline = target.children('.punchline')
+    var punchline = $(event.currentTarget).children('.punchline');
     revealPunchline(punchline);
   })
 }

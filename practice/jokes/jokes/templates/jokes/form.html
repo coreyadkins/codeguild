@@ -10,7 +10,7 @@
     <form action="{% url 'submit_ack' %}"method="post">
       {% csrf_token %}
       <label>Setup<input type="textarea" name="setup"/></label>
-      <label>Setup<input type="textarea" name="punchline"/></label>
+      <label>Punchline<input type="textarea" name="punchline"/></label>
       <input type="submit" name="submit" />
     </form>
   </body>
