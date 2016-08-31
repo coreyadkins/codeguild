@@ -3,7 +3,7 @@
 from django.template import Template
 
 _madlibs = [{'name': 'fred',
-             'template': Template('{{noun}} is dumb.')}]
+             'template': '{{noun}} is dumb.'}]
 
 def access_all_madlibs():
     """Returns the global variable which stores all inputted madlibs."""
@@ -11,14 +11,22 @@ def access_all_madlibs():
 
 
 def access_madlib_by_name(name):
-    """Returns the madlib which has the requested name."""
+    """Returns the madlib which has the requested name.
+
+    >>> _madlibs = [{'name': 'fred'}]
+    >>> access_madlibs_by_names('fred')
+    {'name': 'fred'}
+    """
     for madlib in _madlibs:
         if madlib['name'] == name:
             return madlib
 
 
 def template_is_valid(name, template):
-    """Tests if the name or template in a new madlib template are not empty"""
+    """Tests if the name or template in a new madlib template are not empty.
+
+    >>>
+    """
     return len(name) > 0 and len(template) > 0
 
 

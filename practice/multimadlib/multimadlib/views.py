@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.template.base import VariableNode
 from django.http import HttpResponse
 from django.template import Context, Template
+import re
 from . import models
 
 
@@ -33,7 +34,7 @@ def render_new_madlib_ack(request):
     a message if there are missing fields.
     """
     name = request.POST['name']
-    template = Template(request.POST['template'])
+    template = request.POST['template']
     try:
         models.create_new_madlib(name, template)
     except KeyError:
@@ -44,7 +45,7 @@ def render_new_madlib_ack(request):
 def render_madlib_form(request, madlib_name):
     """Renders the form to input completions to the variables in template."""
     madlib = models.access_madlib_by_name(madlib_name)
-    var_names = _var_names_in_template(madlib['template'])
+    var_names = _var_names_in_template(Template(madlib['template']))
     arguments = {
         'madlib_name': madlib['name'],
         'variables': var_names
@@ -56,9 +57,11 @@ def render_madlib_display(request, madlib_name):
     """Renders completed madlib."""
     madlib = models.access_madlib_by_name(madlib_name)
     template = madlib['template']
-    var_names = _var_names_in_template(template)
-    madlib_variables_to_completions = {}
+    var_names = _var_names_in_template(Template(template))
+    arguments = {}
     for name in var_names:
-        madlib_variables_to_completions.update({name: request.GET[name]})
-    context = Context(madlib_variables_to_completions)
+        arguments.update({name: request.GET[name]})
+        regex = r'{{' + name + '}}'
+        template = re.sub(regex, template)
+    context = Context(arguments)
     return template.render(context)
