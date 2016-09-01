@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flutter - Index</title>
+  </head>
+  <body>
+    <h1>Flutter</h1>
+    <h2>10 Most Recent Flutts</h2>
+    <form action="{% url 'search' %}" method="get">
+      <label>Search for text:<input type="text" name="searchuser"/></label>
+      <input type="submit" />
+    </form>
+    <form action="{% url 'search_userid' %}" method="get">
+      <label>Search for user:<input type="text" name="searchtext"/></label>
+      <input type="submit" />
+    </form>
+    {% for flutt in last_ten_flutts %}
+    <section>
+      {{flutt.author}}: {{flutt.body}}
+    </section>
+    {% endfor %}
+    <a href="{% url 'post_form' %}">Post a Flutt!</a>
+    <section>
+      {{username_display}}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'logout' %}">Logout</a>
+    </section>
+  </body>
+</html>

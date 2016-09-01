@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flutter - Login Ack</title>
+  </head>
+  <body>
+    <form action="{% url 'login_ack' %}" method="post">
+      {% csrf_token %}
+      <label>Username:<input type="text" name="username"/></label>
+      <label>Password:<input type="text" name="password"/></label>
+      <input type="submit" />
+    </form>
+  </body>
+</html>
