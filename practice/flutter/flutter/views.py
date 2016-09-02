@@ -42,7 +42,7 @@ def render_post_ack(request):
     try:
         logic.create_and_save_flutt(user, body)
     except ValueError:
-        return HttpResponse('You forgot to write something! Please try again', status=400)
+        return HttpResponse('You forgot to write something! <a href="/post">Please try again</a>', status=400)
     username_display = logic.get_username_display(request.user.username)
     arguments = {
         'username_display': username_display
@@ -65,7 +65,7 @@ def render_search(request):
             matches = logic.get_matches_by_search_text(search_text)
             last_ten_flutts_by_search_text = logic.get_last_ten_flutts(matches)
         except LookupError:
-            return HttpResponse('No results for that search text.', status=400)
+            return HttpResponse('No results for that search text. <a href="/">Please try again.<a>', status=400)
         username_display = logic.get_username_display(request.user.username)
         arguments = {
             'last_ten_flutts': last_ten_flutts_by_search_text,
@@ -77,8 +77,8 @@ def render_search(request):
         try:
             user_id = logic.get_user_id(username)
         except LookupError:
-            return HttpResponse('Sorry, either that user doesn\'t exist, or they haven\'t posted a Flutt. Try another',
-                                status=400)
+            return HttpResponse('Sorry, either that user doesn\'t exist, or they haven\'t posted a Flutt. <a href="/">P'
+                                'lease try again.</a>', status=400)
         return HttpResponseRedirect('user/' + str(user_id))
 
 
@@ -107,7 +107,7 @@ def render_login_ack(request):
     try:
         logic.login_user(request, username, password)
     except ValueError:
-        return HttpResponse('Invalid login', status=400)
+        return HttpResponse('Invalid login. <a href="/login">Please try again.</a>', status=400)
     arguments = {
         'success': 'Successful login!'
     }
