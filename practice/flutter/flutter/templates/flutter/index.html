@@ -7,18 +7,15 @@
     <link rel="stylesheet" href="{% static 'flutter/index.css' %}">
   </head>
   <body>
-    <section>
-      <h1>Flutter</h1>
-    </section>
-    <section>
-      <a href="{% url 'post_form' %}">Post a Flutt!</a>
-    </section>
-    <section>
-      <h2>10 Most Recent Flutts</h2>
-    </section>
+    <h1>Flutter</h1>
+    <a href="{% url 'post_form' %}">Post a Flutt!</a>
+    <h2>10 Most Recent Flutts</h2>
     <section>
       <form action="{% url 'search' %}" method="get">
         <label>Search for user: <input type="text" name="searchuser"/></label>
+        <input type="submit" />
+      </form>
+      <form action="{% url 'search' %}" method="get">
         <label>Search for text: <input type="text" name="searchtext"/></label>
         <input type="submit" />
       </form>

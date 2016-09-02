@@ -1,3 +1,7 @@
-section {
+body {
+    margin: 1em;
+}
+
+body section {
     margin: 1em;
 }

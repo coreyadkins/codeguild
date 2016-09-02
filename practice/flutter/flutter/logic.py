@@ -37,7 +37,11 @@ def get_matches_by_search_text(search_text):
     """Takes a search text, searches through all posted Flutts for Flutts that contain that text, returns a list of
     Flutts that match.
     """
-    return models.Flutt.objects.filter(body__contains=search_text)
+    matches = models.Flutt.objects.filter(body__contains=search_text)
+    if not matches:
+        raise LookupError('No matches')
+    else:
+        return matches
 
 
 def login_user(request, username, password):
@@ -75,10 +79,13 @@ def get_user_id(username):
     """Takes in a username, searches for a Flutt whose author corresponds to that username, then returns the author_id
     property of the Flutt, which is the user_id of that username.
     """
-    flutt = models.Flutt.objects.filter(author=username)
-    return flutt[0].authorid
+    try:
+        flutt = models.Flutt.objects.filter(author=username)
+        return flutt[0].author_id
+    except IndexError:
+        raise LookupError('No Flutts by that username')
 
 
 def render_search_by_user_id(user_id):
     """Takes an author id, searches for all Flutts which have that author id."""
-    return models.Flutt.objects.filter(authorid=user_id)
+    return models.Flutt.objects.filter(author_id=user_id)

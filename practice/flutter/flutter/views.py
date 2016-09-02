@@ -53,31 +53,33 @@ def render_post_ack(request):
 def render_search(request):
     """Detects what kind of search the user is attempting (by user or by text).
 
-    If it is by user, gets the user ID of the searched user, then directs to the 'search_by_user_id' url.
+    If it is by user, gets the user ID of the searched user, then directs to the 'search_by_user_id' url. If there is no
+    user by that name, or if they haven't posted a Flutt, returns a 400 response.
 
-    If it is by text, completes the search and returns 10 matches sorted by most recent.
-
-    If both fields have values, returns a 400 response directing user to only fill in one field per search.
+    If it is by text, completes the search and returns 10 matches sorted by most recent. If there are no results,
+    returns a 400 response.
     """
-    if request.GET.get('searchuser', False) != '' and request.GET.get('searchtext', False) != '':
-        return HttpResponse('Please enter only one field per search.', status=400)
-    elif request.GET.get('searchuser', False) != '':
-        username = request.GET['searchuser']
-        try:
-            user_id = logic.get_user_id(username)
-        except IndexError:
-            return HttpResponse('Sorry, either that user doesn\'t exist, or they haven\'t posted a Flutt. Try another',
-                                status=400)
-        return HttpResponseRedirect('user/' + str(user_id))
-    else:
+    if 'searchtext' in request.GET:
         search_text = request.GET.get('searchtext', False)
-        matches = logic.get_matches_by_search_text(search_text)
+        try:
+            matches = logic.get_matches_by_search_text(search_text)
+            last_ten_flutts_by_search_text = logic.get_last_ten_flutts(matches)
+        except LookupError:
+            return HttpResponse('No results for that search text.', status=400)
         username_display = logic.get_username_display(request.user.username)
         arguments = {
-            'last_ten_flutts': logic.get_last_ten_flutts(matches),
+            'last_ten_flutts': last_ten_flutts_by_search_text,
             'username_display': username_display
         }
         return render(request, 'flutter/index.html', arguments)
+    elif 'searchuser' in request.GET:
+        username = request.GET['searchuser']
+        try:
+            user_id = logic.get_user_id(username)
+        except LookupError:
+            return HttpResponse('Sorry, either that user doesn\'t exist, or they haven\'t posted a Flutt. Try another',
+                                status=400)
+        return HttpResponseRedirect('user/' + str(user_id))
 
 
 def render_search_by_userid(request, user_id):
