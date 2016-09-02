@@ -24,9 +24,9 @@ def get_all_flutts():
 def sort_flutts_by_most_recent(flutts_list):
     """Takes a list of Flutts, returns them sorted by most recent.
 
-    >>> get_last_ten_flutts([models.Flutt(author='Fred', body='2', timestamp=datetime.datetime(2016, 9, 2, 10, 28, 34),\
-    author_id=0), models.Flutt(author='Bob', body='1', timestamp=datetime.datetime(2016, 9, 2, 10, 28, 35), author_id=1\
-    )])
+    >>> sort_flutts_by_most_recent([models.Flutt(author='Fred', body='2', timestamp=datetime.datetime\
+    (2016, 9, 2, 10, 28, 34), author_id=0), models.Flutt(author='Bob', body='1', timestamp=datetime.datetime\
+    (2016, 9, 2, 10, 28, 35), author_id=1)])
     [Flutt(author='Bob', body='1', timestamp=2016-09-02 10:28:35, author_id=1), Flutt(author='Fred', body='2', timestam\
 p=2016-09-02 10:28:34, author_id=0)]
     """
