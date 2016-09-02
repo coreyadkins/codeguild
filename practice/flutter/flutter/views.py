@@ -43,7 +43,7 @@ def render_post_ack(request):
         logic.create_and_save_flutt(user, body)
     except ValueError:
         return HttpResponse('You forgot to write something! <a href="/post">Please try again</a>', status=400)
-    username_display = logic.get_username_display(request.user.username)
+    username_display = logic.get_username_display(user.username)
     arguments = {
         'username_display': username_display
     }
@@ -63,9 +63,9 @@ def render_search(request):
         search_text = request.GET.get('searchtext', False)
         try:
             matches = logic.get_matches_by_search_text(search_text)
-            last_ten_flutts_by_search_text = logic.get_last_ten_flutts(matches)
         except LookupError:
             return HttpResponse('No results for that search text. <a href="/">Please try again.<a>', status=400)
+        last_ten_flutts_by_search_text = logic.get_last_ten_flutts(matches)
         username_display = logic.get_username_display(request.user.username)
         arguments = {
             'last_ten_flutts': last_ten_flutts_by_search_text,

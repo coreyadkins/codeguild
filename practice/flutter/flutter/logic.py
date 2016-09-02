@@ -11,7 +11,7 @@ def create_and_save_flutt(user, body):
         raise ValueError('Empty body')
     else:
         time = datetime.datetime.now()
-        new_flutt = models.Flutt(author=user, body=body, timestamp=time, authorid=user.id)
+        new_flutt = models.Flutt(author=user.username, body=body, timestamp=time, authorid=user.id)
         new_flutt.save()
 
 
