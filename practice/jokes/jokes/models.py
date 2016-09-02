@@ -41,7 +41,7 @@ class Joke:
         """Returns repr.
 
         >>> repr(Joke('Hello', 'Goodbye'))
-        Joke('Hello', 'Goodbye')
+        "Joke('Hello', 'Goodbye')"
         """
         return 'Joke({!r}, {!r})'.format(
             self.setup,
