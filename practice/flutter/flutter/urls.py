@@ -26,6 +26,5 @@ urlpatterns = [
     url(r'^login/ack$', views.render_login_ack, name="login_ack"),
     url(r'^login$', views.render_login, name="login"),
     url(r'^logout$', views.render_logout, name="logout"),
-    url(r'^user/$', views.search_for_user_id, name="search_userid"),
-    url(r'^user/(?P<user_id>.+)$', views.render_flutts_by_userid, name="flutts_by_userid")
+    url(r'^user/(?P<user_id>.+)$', views.render_search_by_userid, name="search_by_userid")
 ]

@@ -1,26 +1,33 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Flutter - Index</title>
+    <link rel="stylesheet" href="{% static 'flutter/index.css' %}">
   </head>
   <body>
-    <h1>Flutter</h1>
-    <h2>10 Most Recent Flutts</h2>
-    <form action="{% url 'search' %}" method="get">
-      <label>Search for text:<input type="text" name="searchuser"/></label>
-      <input type="submit" />
-    </form>
-    <form action="{% url 'search_userid' %}" method="get">
-      <label>Search for user:<input type="text" name="searchtext"/></label>
-      <input type="submit" />
-    </form>
+    <section>
+      <h1>Flutter</h1>
+    </section>
+    <section>
+      <a href="{% url 'post_form' %}">Post a Flutt!</a>
+    </section>
+    <section>
+      <h2>10 Most Recent Flutts</h2>
+    </section>
+    <section>
+      <form action="{% url 'search' %}" method="get">
+        <label>Search for user: <input type="text" name="searchuser"/></label>
+        <label>Search for text: <input type="text" name="searchtext"/></label>
+        <input type="submit" />
+      </form>
+    </section>
     {% for flutt in last_ten_flutts %}
     <section>
       {{flutt.author}}: {{flutt.body}}
     </section>
-    {% endfor %}
-    <a href="{% url 'post_form' %}">Post a Flutt!</a>
+    {% endfor  %}
     <section>
       {{username_display}}
       <a href="{% url 'login' %}">Login</a>
