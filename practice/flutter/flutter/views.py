@@ -10,9 +10,10 @@ from . import logic
 def render_index(request):
     """View for rendering index without any search terms."""
     all_flutts = logic.get_all_flutts()
+    sorted_flutts_all = logic.sort_flutts_by_most_recent(all_flutts)
     username_display = logic.get_username_display(request.user.username)
     arguments = {
-        'last_ten_flutts': logic.get_last_ten_flutts(all_flutts),
+        'last_ten_flutts': sorted_flutts_all[:10],
         'username_display': username_display
     }
     return render(request, 'flutter/index.html', arguments)
@@ -64,10 +65,10 @@ def render_search(request):
             matches = logic.get_matches_by_search_text(search_text)
         except LookupError:
             return HttpResponse('No results for that search text. <a href="/">Please try again.<a>', status=400)
-        last_ten_flutts_by_search_text = logic.get_last_ten_flutts(matches)
+        sorted_flutts_by_search_text = logic.sort_flutts_by_most_recent(matches)
         username_display = logic.get_username_display(request.user.username)
         arguments = {
-            'last_ten_flutts': last_ten_flutts_by_search_text,
+            'last_ten_flutts': sorted_flutts_by_search_text[:10],
             'username_display': username_display
         }
         return render(request, 'flutter/index.html', arguments)
@@ -76,17 +77,20 @@ def render_search(request):
         try:
             user_id = logic.get_user_id(username)
         except LookupError:
-            return HttpResponse('Sorry, either that user doesn\'t exist, or they haven\'t posted a Flutt. <a href="/">P'
-                                'lease try again.</a>', status=400)
+            return HttpResponse('Sorry, that user doesn\'t exist. <a href="/">Please try again.</a>', status=400)
         return HttpResponseRedirect('user/' + str(user_id))
 
 
 def render_search_by_userid(request, user_id):
     """Searches for all flutts by inputted user, returns 10 matches sorted by most recent."""
-    flutts_by_user = logic.render_search_by_user_id(user_id)
+    try:
+        flutts_by_user_id = logic.render_search_by_user_id(user_id)
+    except LookupError:
+        return HttpResponse('Sorry, that user has not posted a Flutt. <a href="/">Please try again.</a>', status=400)
+    sorted_flutts_by_user_id = logic.sort_flutts_by_most_recent(flutts_by_user_id)
     username_display = logic.get_username_display(request.user.username)
     arguments = {
-        'last_ten_flutts': logic.get_last_ten_flutts(flutts_by_user),
+        'last_ten_flutts': sorted_flutts_by_user_id[:10],
         'username_display': username_display
     }
     return render(request, 'flutter/index.html', arguments)
@@ -100,13 +104,18 @@ def render_login(request):
 def render_login_ack(request):
     """Logs the user in, and returns an acknowledgment on successful login.
 
-    If the login is not valid, returns a 400 response."""
+    If the password was incorrect, returns a 400 response.
+
+    If the username does not exist, returns a 404 response.
+    """
     username = request.POST['username']
     password = request.POST['password']
     try:
         logic.login_user(request, username, password)
     except ValueError:
-        return HttpResponse('Invalid login. <a href="/login">Please try again.</a>', status=400)
+        return HttpResponse('Incorrect password. <a href="/login">Please try again.</a>', status=400)
+    except LookupError:
+        return HttpResponse('That username does not exist.', status=404)
     arguments = {
         'success': 'Successful login!'
     }

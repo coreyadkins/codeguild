@@ -2,6 +2,7 @@
 
 from . import models
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 import datetime
 
 
@@ -20,8 +21,8 @@ def get_all_flutts():
     return models.Flutt.objects.all()
 
 
-def get_last_ten_flutts(flutts_list):
-    """Takes a list of Flutts, returns the ten most recent Flutts sorted by most recent.
+def sort_flutts_by_most_recent(flutts_list):
+    """Takes a list of Flutts, returns them sorted by most recent.
 
     >>> get_last_ten_flutts([models.Flutt(author='Fred', body='2', timestamp=datetime.datetime(2016, 9, 2, 10, 28, 34),\
     author_id=0), models.Flutt(author='Bob', body='1', timestamp=datetime.datetime(2016, 9, 2, 10, 28, 35), author_id=1\
@@ -29,8 +30,7 @@ def get_last_ten_flutts(flutts_list):
     [Flutt(author='Bob', body='1', timestamp=2016-09-02 10:28:35, author_id=1), Flutt(author='Fred', body='2', timestam\
 p=2016-09-02 10:28:34, author_id=0)]
     """
-    flutts_list_sorted = sorted(flutts_list, key=lambda Flutt: Flutt.timestamp, reverse=True)
-    return flutts_list_sorted[:10]
+    return sorted(flutts_list, key=lambda Flutt: Flutt.timestamp, reverse=True)
 
 
 def get_matches_by_search_text(search_text):
@@ -47,14 +47,19 @@ def get_matches_by_search_text(search_text):
 def login_user(request, username, password):
     """Logs the user in.
 
-    Returns a ValueError if the login was unsuccessful, either because the user does not exist or the password was
-    incorrect.
+    Returns a LookupError if the username does not exist.
+
+    Returns a ValueError if the password was incorrect.
     """
     user = authenticate(username=username, password=password)
     if user is not None:
         login(request, user)
+    try:
+        User.objects.get(username=username)
+    except User.DoesNotExist:
+        raise LookupError('That user does not exist.')
     else:
-        raise ValueError('Invalid Login')
+        raise ValueError('Incorrect password')
 
 
 def get_username_display(username):
@@ -76,16 +81,24 @@ def get_username_display(username):
 
 
 def get_user_id(username):
-    """Takes in a username, searches for a Flutt whose author corresponds to that username, then returns the author_id
-    property of the Flutt, which is the user_id of that username.
+    """Takes in a username, returns the user id for the user who has that username.
+
+    If there is no user with that username, raises a LookupError.
     """
     try:
-        flutt = models.Flutt.objects.filter(author=username)
-        return flutt[0].author_id
-    except IndexError:
-        raise LookupError('No Flutts by that username')
+        user = User.objects.get(username=username)
+        return user.id
+    except User.DoesNotExist:
+        raise LookupError('That user does not exist')
 
 
 def render_search_by_user_id(user_id):
-    """Takes an author id, searches for all Flutts which have that author id."""
-    return models.Flutt.objects.filter(author_id=user_id)
+    """Takes an author id, searches for all Flutts which have that author id.
+
+    If there are no Flutts by that user, raises a LookupError.
+    """
+    matches = models.Flutt.objects.filter(author_id=user_id)
+    if not matches:
+        raise LookupError('No Flutts for this user.')
+    else:
+        return matches
