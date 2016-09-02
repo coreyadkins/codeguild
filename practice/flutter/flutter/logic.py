@@ -6,18 +6,32 @@ from django.contrib.auth.models import User
 import datetime
 
 
-def create_and_save_flutt(user, body):
-    """Creates a new Flutt object and saves to the database."""
+def create_and_save_flutt(username, body, time, user_id):
+    """Creates a new Flutt object and saves to the database.
+
+    >>> create_and_save_flutt('adkinsbass', 'Radical!', datetime.datetime(2016, 9, 2, 10, 28, 34), 0)
+    >>> models.Flutt.objects.get(author='adkinsbass', body='Radical!')
+    Flutt(author='adkinsbass', body='Radical!', timestamp=2016-09-02 10:28:34+00:00, author_id=0)
+    """
     if not body:
         raise ValueError('Empty body')
     else:
-        time = datetime.datetime.now()
-        new_flutt = models.Flutt(author=user.username, body=body, timestamp=time, authorid=user.id)
+        new_flutt = models.Flutt(author=username, body=body, timestamp=time, author_id=user_id)
         new_flutt.save()
 
 
+def get_current_time():
+    """Returns the server time at moment of access."""
+    return datetime.datetime.now()
+
+
 def get_all_flutts():
-    """Returns all posted Flutts"""
+    """Returns all posted Flutts.
+
+    >>> models.Flutt(author='Fred', body='2', timestamp=datetime.datetime(2016, 9, 2, 10, 28, 34), author_id=0).save()
+    >>> list(get_all_flutts())
+    [Flutt(author='Fred', body='2', timestamp=2016-09-02 10:28:34+00:00, author_id=0)]
+    """
     return models.Flutt.objects.all()
 
 
@@ -36,6 +50,14 @@ p=2016-09-02 10:28:34, author_id=0)]
 def get_matches_by_search_text(search_text):
     """Takes a search text, searches through all posted Flutts for Flutts that contain that text, returns a list of
     Flutts that match.
+
+    >>> models.Flutt(author='Fred', body='2', timestamp=datetime.datetime(2016, 9, 2, 10, 28, 34), author_id=0).save()
+    >>> get_matches_by_search_text(2)
+    <QuerySet [Flutt(author='Fred', body='2', timestamp=2016-09-02 10:28:34+00:00, author_id=0)]>
+    >>> get_matches_by_search_text(3)
+    Traceback (most recent call last):
+    ...
+    LookupError: No matches
     """
     matches = models.Flutt.objects.filter(body__contains=search_text)
     if not matches:
@@ -50,6 +72,17 @@ def login_user(request, username, password):
     Returns a LookupError if the username does not exist.
 
     Returns a ValueError if the password was incorrect.
+
+    >>> user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    >>> user.save()
+    >>> login_user('request', 'john', 'floorb')
+    Traceback (most recent call last):
+    ...
+    ValueError: Incorrect password
+    >>> login_user('request', 'fee', 'foo')
+    Traceback (most recent call last):
+    ...
+    LookupError: That user does not exist.
     """
     user = authenticate(username=username, password=password)
     if user is not None:
@@ -84,6 +117,15 @@ def get_user_id(username):
     """Takes in a username, returns the user id for the user who has that username.
 
     If there is no user with that username, raises a LookupError.
+    >>> user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    >>> user.save()
+    >>> get_user_id('john')
+    1
+    >>> get_user_id('food')
+    Traceback (most recent call last):
+    ...
+    LookupError: That user does not exist
+
     """
     try:
         user = User.objects.get(username=username)
@@ -92,10 +134,14 @@ def get_user_id(username):
         raise LookupError('That user does not exist')
 
 
-def render_search_by_user_id(user_id):
+def search_by_user_id(user_id):
     """Takes an author id, searches for all Flutts which have that author id.
 
     If there are no Flutts by that user, raises a LookupError.
+
+    >>> models.Flutt(author='Fred', body='2', timestamp=datetime.datetime(2016, 9, 2, 10, 28, 34), author_id=0).save()
+    >>> search_by_user_id(0)
+    <QuerySet [Flutt(author='Fred', body='2', timestamp=2016-09-02 10:28:34+00:00, author_id=0)]>
     """
     matches = models.Flutt.objects.filter(author_id=user_id)
     if not matches:

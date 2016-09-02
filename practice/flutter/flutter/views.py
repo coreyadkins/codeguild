@@ -37,10 +37,12 @@ def render_post_ack(request):
 
     Returns a 400 response if the user did not add something to the body of the Flutt.
     """
-    user = request.user
+    username = request.user.username
     body = request.POST['body']
+    time = logic.get_current_time()
+    user_id = request.user.id
     try:
-        logic.create_and_save_flutt(user, body)
+        logic.create_and_save_flutt(username, body, time, user_id)
     except ValueError:
         return HttpResponse('You forgot to write something! <a href="/post">Please try again</a>', status=400)
     username_display = logic.get_username_display(user.username)
@@ -84,7 +86,7 @@ def render_search(request):
 def render_search_by_userid(request, user_id):
     """Searches for all flutts by inputted user, returns 10 matches sorted by most recent."""
     try:
-        flutts_by_user_id = logic.render_search_by_user_id(user_id)
+        flutts_by_user_id = logic.search_by_user_id(user_id)
     except LookupError:
         return HttpResponse('Sorry, that user has not posted a Flutt. <a href="/">Please try again.</a>', status=400)
     sorted_flutts_by_user_id = logic.sort_flutts_by_most_recent(flutts_by_user_id)
