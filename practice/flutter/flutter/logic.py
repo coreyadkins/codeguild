@@ -4,6 +4,8 @@ from . import models
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 import datetime
+from django.test import client
+from django.contrib.auth import logout
 
 
 def create_and_save_flutt(username, body, time, user_id):
@@ -74,7 +76,9 @@ def login_user(request, username, password):
     Returns a ValueError if the password was incorrect.
 
     >>> user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
-    >>> user.save()
+    >>> c = client.Client()
+    >>> c.login(username='john', password='johnpassword')
+    True
     >>> login_user('request', 'john', 'floorb')
     Traceback (most recent call last):
     ...
@@ -148,3 +152,16 @@ def search_by_user_id(user_id):
         raise LookupError('No Flutts for this user.')
     else:
         return matches
+
+def logout_user(request):
+    """Logs out the current logged in user.
+
+    >>> user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    >>> c = client.Client()
+    >>> login = c.login(username='john', password='johnpassword')
+    >>> response = c.get('/logout')
+    >>> 'user' in response.request.keys()
+    False
+    """
+    logout(request)
+    return request

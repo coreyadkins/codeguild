@@ -3,7 +3,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from . import logic
 
 
@@ -126,5 +125,5 @@ def render_login_ack(request):
 
 def render_logout(request):
     """Logs the user out."""
-    logout(request)
+    logic.logout_user(request)
     return render(request, 'flutter/logout_ack.html')

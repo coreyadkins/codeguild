@@ -10,6 +10,9 @@ import doctest
 from . import logic
 from . import models
 from . import views
+from betamax import Betamax
+from requests import Session
+from unittest import TestCase
 
 
 DOCTEST_MODULES = [
@@ -17,7 +20,6 @@ DOCTEST_MODULES = [
     models,
     views,
 ]
-
 
 def load_tests(loader, tests, ignore):
     """Add all known modules with doctests as unittest tests, which is what Django runs.
