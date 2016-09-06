@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Summary</title>
+  </head>
+  <body>
+    <ul>
+      {% for flavor in results_by_flavor %}
+      <li>
+        {{flavor.flavor_name}}: {{flavor.percent|floatformat}}
+      </li>
+      {% endfor %}
+    </ul>
+    <a href="{% url 'poll_form' %}">Voting form here.</a>
+  </body>
+</html>
