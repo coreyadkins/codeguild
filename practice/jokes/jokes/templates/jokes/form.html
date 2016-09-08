@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Jokes - Form</title>
+  </head>
+  <body>
+    <h1>Give me a joke!</h1>
+    <form action="{% url 'submit_ack' %}"method="post">
+      {% csrf_token %}
+      <label>Setup<textarea name="setup"></textarea></label>
+      <label>Punchline<textarea name="punchline"></textarea></label>
+      <input type="submit" name="submit" />
+    </form>
+  </body>
+</html>
