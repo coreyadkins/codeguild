@@ -3,6 +3,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth import authenticate, login, logout
+from django.test import RequestFactory
+from django.contrib.sessions.backends.db import SessionStore
 from . import logic
 
 
@@ -10,10 +14,9 @@ def render_index(request):
     """View for rendering index without any search terms."""
     all_flutts = logic.get_all_flutts()
     sorted_flutts_all = logic.sort_flutts_by_most_recent(all_flutts)
-    username_display = logic.get_username_display(request.user.username)
     arguments = {
         'last_ten_flutts': sorted_flutts_all[:10],
-        'username_display': username_display
+        'username': request.user.username
     }
     return render(request, 'flutter/index.html', arguments)
 
@@ -24,9 +27,8 @@ def render_post_form(request):
 
     Requires login by the user, will direct someone who is not logged in to login page.
     """
-    username_display = logic.get_username_display(request.user.username)
     arguments = {
-        'username_display': username_display
+        'username': request.user.username
     }
     return render(request, 'flutter/post_form.html', arguments)
 
@@ -44,9 +46,8 @@ def render_post_ack(request):
         logic.create_and_save_flutt(username, body, time, user_id)
     except ValueError:
         return HttpResponse('You forgot to write something! <a href="/post">Please try again</a>', status=400)
-    username_display = logic.get_username_display(user.username)
     arguments = {
-        'username_display': username_display
+        'username': username
     }
     return render(request, 'flutter/post_ack.html', arguments)
 
@@ -62,24 +63,20 @@ def render_search(request):
     """
     if 'searchtext' in request.GET:
         search_text = request.GET.get('searchtext', False)
-        try:
-            matches = logic.get_matches_by_search_text(search_text)
-        except LookupError:
-            return HttpResponse('No results for that search text. <a href="/">Please try again.<a>', status=400)
+        matches = logic.get_matches_by_search_text(search_text)
         sorted_flutts_by_search_text = logic.sort_flutts_by_most_recent(matches)
-        username_display = logic.get_username_display(request.user.username)
         arguments = {
             'last_ten_flutts': sorted_flutts_by_search_text[:10],
-            'username_display': username_display
+            'username': request.user.username
         }
         return render(request, 'flutter/index.html', arguments)
     elif 'searchuser' in request.GET:
         username = request.GET['searchuser']
         try:
-            user_id = logic.get_user_id(username)
+            user = logic.get_user(username)
         except LookupError:
             return HttpResponse('Sorry, that user doesn\'t exist. <a href="/">Please try again.</a>', status=400)
-        return HttpResponseRedirect('user/' + str(user_id))
+        return HttpResponseRedirect('user/' + str(user.id))
 
 
 def render_search_by_userid(request, user_id):
@@ -89,10 +86,9 @@ def render_search_by_userid(request, user_id):
     except LookupError:
         return HttpResponse('Sorry, that user has not posted a Flutt. <a href="/">Please try again.</a>', status=400)
     sorted_flutts_by_user_id = logic.sort_flutts_by_most_recent(flutts_by_user_id)
-    username_display = logic.get_username_display(request.user.username)
     arguments = {
         'last_ten_flutts': sorted_flutts_by_user_id[:10],
-        'username_display': username_display
+        'username': request.user.username
     }
     return render(request, 'flutter/index.html', arguments)
 
@@ -105,18 +101,40 @@ def render_login(request):
 def render_login_ack(request):
     """Logs the user in, and returns an acknowledgment on successful login.
 
-    If the password was incorrect, returns a 400 response.
+    If the password was incorrect or the username does not exist, returns a 400 response.
 
-    If the username does not exist, returns a 404 response.
+    >>> factory = RequestFactory()
+    >>> request = factory.post('/login/ack', {'username': 'john', 'password': 'johnpassword'})
+    >>> user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    >>> session = SessionStore()
+    >>> session.create()
+    >>> request.session = session
+    >>> response = render_login_ack(request)
+    >>> response.status_code
+    200
+    >>> factory = RequestFactory()
+    >>> request = factory.post('/login/ack', {'username': 'john', 'password': 'floorb'})
+    >>> response = render_login_ack(request)
+    >>> response.status_code
+    400
+    >>> factory = RequestFactory()
+    >>> request = factory.post('/login/ack', {'username': 'dfe', 'password': 'johnpassword'})
+    >>> response = render_login_ack(request)
+    >>> response.status_code
+    400
+
     """
     username = request.POST['username']
     password = request.POST['password']
-    try:
-        logic.login_user(request, username, password)
-    except ValueError:
-        return HttpResponse('Incorrect password. <a href="/login">Please try again.</a>', status=400)
-    except LookupError:
-        return HttpResponse('That username does not exist.', status=404)
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        try:
+            User.objects.get(username=username)
+        except User.DoesNotExist:
+            return HttpResponse('Invalid login. <a href="/login">Please try again.</a>', status=400)
+        login(request, user)
+    else:
+        return HttpResponse('Invalid login. <a href="/login">Please try again.</a>', status=400)
     arguments = {
         'success': 'Successful login!'
     }
@@ -124,6 +142,17 @@ def render_login_ack(request):
 
 
 def render_logout(request):
-    """Logs the user out."""
-    logic.logout_user(request)
+    """Logs the user out.
+
+    >>> factory = RequestFactory()
+    >>> request = factory.get('/logout')
+    >>> request.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    >>> session = SessionStore()
+    >>> session.create()
+    >>> request.session = session
+    >>> response = render_logout(request)
+    >>> isinstance(request.user, AnonymousUser)
+    True
+    """
+    logout(request)
     return render(request, 'flutter/logout_ack.html')

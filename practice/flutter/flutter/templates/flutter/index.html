@@ -20,13 +20,21 @@
         <input type="submit" />
       </form>
     </section>
-    {% for flutt in last_ten_flutts %}
+      {% if last_ten_flutts|length == 0 %}
+      <p>Sorry, no matches on that query.</p>
+      {% else %}
+        {% for flutt in last_ten_flutts %}
+        <section>
+          {{flutt.author}}: {{flutt.body}}
+        </section>
+        {% endfor %}
+      {% endif %}
     <section>
-      {{flutt.author}}: {{flutt.body}}
-    </section>
-    {% endfor  %}
-    <section>
-      {{username_display}}
+      {% if username != '' %}
+        <p>You are currently logged in as {{username}}</p>
+      {% else %}
+        <p>You are not currently logged in. Please login to add a Flutt.</p>
+      {% endif %}
       <a href="{% url 'login' %}">Login</a>
       <a href="{% url 'logout' %}">Logout</a>
     </section>

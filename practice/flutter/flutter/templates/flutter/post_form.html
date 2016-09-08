@@ -12,7 +12,11 @@
       <input type="submit" />
     </form>
     <section>
-      {{username_display}}
+      {% if username != '' %}
+        <p>You are currently logged in as {{username}}</p>
+      {% else %}
+        <p>You are not currently logged in. Please login to add a Flutt.</p>
+      {% endif %}
     </section>
   </body>
 </html>
