@@ -1,0 +1,1 @@
+"""flutter Admin Configuration."""

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flutter - Post Ack</title>
+  </head>
+  <body>
+    <h2>Good job, your flutt has been flutted.</h2>
+    <a href="{% url 'index' %}">Go to the main page.</a>
+  </body>
+  <section>
+    {% if username != '' %}
+      <p>You are currently logged in as {{username}}</p>
+    {% else %}
+      <p>You are not currently logged in. Please login to add a Flutt.</p>
+    {% endif %}
+  </section>
+</html>

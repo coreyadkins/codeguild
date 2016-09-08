@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flutter - Index</title>
+    <link rel="stylesheet" href="{% static 'flutter/index.css' %}">
+  </head>
+  <body>
+    <h1>Flutter</h1>
+    <a href="{% url 'post_form' %}">Post a Flutt!</a>
+    <h2>10 Most Recent Flutts</h2>
+    <section>
+      <form action="{% url 'search' %}" method="get">
+        <label>Search for user: <input type="text" name="searchuser"/></label>
+        <input type="submit" />
+      </form>
+      <form action="{% url 'search' %}" method="get">
+        <label>Search for text: <input type="text" name="searchtext"/></label>
+        <input type="submit" />
+      </form>
+    </section>
+      {% if last_ten_flutts|length == 0 %}
+      <p>Sorry, no matches on that query.</p>
+      {% else %}
+        {% for flutt in last_ten_flutts %}
+        <section>
+          {{flutt.author}}: {{flutt.body}}
+        </section>
+        {% endfor %}
+      {% endif %}
+    <section>
+      {% if username != '' %}
+        <p>You are currently logged in as {{username}}</p>
+      {% else %}
+        <p>You are not currently logged in. Please login to add a Flutt.</p>
+      {% endif %}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'logout' %}">Logout</a>
+    </section>
+  </body>
+</html>

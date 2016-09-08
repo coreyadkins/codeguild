@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flutter - Post Form</title>
+  </head>
+  <body>
+    <h2>Post a Flutt:</h2>
+    <form action="{% url 'post_ack' %}" method="post">
+      {% csrf_token %}
+      <input type="text" name="body" /> 
+      <input type="submit" />
+    </form>
+    <section>
+      {% if username != '' %}
+        <p>You are currently logged in as {{username}}</p>
+      {% else %}
+        <p>You are not currently logged in. Please login to add a Flutt.</p>
+      {% endif %}
+    </section>
+  </body>
+</html>
