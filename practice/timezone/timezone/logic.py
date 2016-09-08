@@ -6,7 +6,7 @@ from tzwhere import tzwhere
 
 def get_current_time():
     """Returns the current time in UTC formatted for ISO 8601."""
-    return arrow.utcnow().isoformat()
+    return arrow.utcnow()
 
 
 def get_timezone(lat, lng):
@@ -30,18 +30,5 @@ def get_timezone(lat, lng):
 def get_time_at_timezone(timezone):
     """Takes a timezone name, and gives the current time at that timezone."""
     current_time = arrow.utcnow()
-    return current_time.to(timezone).isoformat()
+    return current_time.to(timezone)
 
-
-def convert_to_timezone(time_in, timezone_out):
-    """Takes a time and date, converts the time to the time at output timezone."
-
-    :param time_in: Starting time and date
-    :param timezone_out: Timezone name of output timezone
-    :return: Arrow object converted to new timezone
-
-    >>> convert_to_timezone('2013-05-09T03:59:59.999999-04:00', 'America/Los_Angeles')
-    <Arrow [2013-05-09T00:59:59.999999-07:00]>
-    """
-    time_in = arrow.get(time_in)
-    return time_in.to(timezone_out)

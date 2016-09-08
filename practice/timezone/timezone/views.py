@@ -2,11 +2,12 @@
 
 from django.http import HttpResponse
 from . import logic
+import arrow
 
 
 def get_server_time(request):
     """Retrieves the current time in UTC 8601 format."""
-    current_time = logic.get_current_time()
+    current_time = logic.get_current_time().isoformat()
     return HttpResponse(current_time)
 
 
@@ -21,10 +22,15 @@ def get_timezone_at_lat_lng(request, lat, lng):
     404
     """
     try:
-        timezone = logic.get_timezone(float(lat), float(lng))
-        return HttpResponse(timezone)
+        lat, lng = float(lat), float(lng)
+    except TypeError:
+        return HttpResponse('Invalid input type. Please use numbers.', status=400)
+    try:
+        timezone = logic.get_timezone(lat, lng)
     except ValueError:
-        return HttpResponse('Not valid', status=404)
+        return HttpResponse('Invalid coordinates', status=404)
+    return HttpResponse(timezone)
+
 
 def get_time_at_lat_lng(request, lat, lng):
     """Retrives the current time at inputted longitude and latitude coordinates.
@@ -34,11 +40,16 @@ def get_time_at_lat_lng(request, lat, lng):
     400
     """
     try:
-        timezone = logic.get_timezone(float(lat), float(lng))
-        time_at_timezone = logic.get_time_at_timezone(timezone)
-        return HttpResponse(time_at_timezone)
+        lat, lng = float(lat), float(lng)
+    except TypeError:
+        return HttpResponse('Invalid input type. Please use numbers.', status=400)
+    try:
+        timezone = logic.get_timezone(lat, lng)
     except ValueError:
-        return HttpResponse('Not valid', status=400)
+        return HttpResponse('Invalid coordinates', status=404)
+    time_at_timezone = logic.get_time_at_timezone(timezone).isoformat()
+    return HttpResponse(time_at_timezone)
+
 
 def convert_time_from_lat_lngs(request, in_time, out_lat, out_lng):
     """Converts inputted time into concurrent time at output longitude and latitude coordinates.
@@ -51,8 +62,17 @@ def convert_time_from_lat_lngs(request, in_time, out_lat, out_lng):
     400
     """
     try:
-        timezone_out = logic.get_timezone(float(out_lat), float(out_lng))
-        converted_time = logic.convert_to_timezone(in_time, timezone_out)
-        return HttpResponse(converted_time)
+        out_lat, out_lng = float(out_lat), float(out_lng)
+    except TypeError:
+        return HttpResponse('Invalid input type. Please use numbers.', status=400)
+    try:
+        timezone_out = logic.get_timezone(out_lat, out_lng)
     except ValueError:
-        return HttpResponse('Not valid', status=400)
+        return HttpResponse('Invalid coordinates', status=404)
+    try:
+        time_in = arrow.get(in_time)
+    except arrow.parser.ParserError:
+        return HttpResponse('Invalid time', status=400)
+    converted_time = time_in.to(timezone_out)
+    return HttpResponse(converted_time)
+
